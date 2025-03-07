@@ -9,11 +9,11 @@ using UnityEngine.UIElements;
 
 public class ItemEditor : EditorWindow
 {
-    private ItemDataList_SO dataBase;
-    private List<ItemDetails> itemList = new List<ItemDetails>();
+    private ItemDatabase_SO dataBase;
+    private List<ItemModel> itemList = new List<ItemModel>();
     private VisualTreeAsset itemRowTemplate;
     private ScrollView itemDetailsSection;
-    private ItemDetails activeItem;
+    private ItemModel activeItem;
 
     //默认预览图片
     private Sprite defaultIcon;
@@ -76,7 +76,7 @@ public class ItemEditor : EditorWindow
 
     private void OnAddItemClicked()
     {
-        ItemDetails newItem = new ItemDetails();
+        ItemModel newItem = new ItemModel();
         newItem.itemName = "NEW ITEM";
         newItem.itemID = 1001 + itemList.Count;
         itemList.Add(newItem);
@@ -86,12 +86,12 @@ public class ItemEditor : EditorWindow
 
     private void LoadDataBase()
     {
-        var dataArray = AssetDatabase.FindAssets("ItemDataList_SO");
+        var dataArray = AssetDatabase.FindAssets("Item Database");
 
         if (dataArray.Length > 1)
         {
             var path = AssetDatabase.GUIDToAssetPath(dataArray[0]);
-            dataBase = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDataList_SO)) as ItemDataList_SO;
+            dataBase = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDatabase_SO)) as ItemDatabase_SO;
         }
 
         itemList = dataBase.itemDetailsList;
@@ -128,7 +128,7 @@ public class ItemEditor : EditorWindow
 
     private void OnListSelectionChange(IEnumerable<object> selectedItem)
     {
-        activeItem = (ItemDetails)selectedItem.First();
+        activeItem = (ItemModel)selectedItem.First();
         GetItemDetails();
         itemDetailsSection.visible = true;
     }
