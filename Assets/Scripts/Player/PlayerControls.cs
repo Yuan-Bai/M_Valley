@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,26 +16,31 @@ public class PlayerControls : MonoBehaviour
 
     private Vector2 _moveInput;
     private Vector2 _smoothMovement;
-    private PlayerInputControls _playerInputControls;
 
     void Awake()
     {
-        _playerInputControls = new PlayerInputControls();
         rb = GetComponent<Rigidbody2D>();
     }
 
     void OnEnable()
     {
-        _playerInputControls.GamePlayer.Enable();
-        _playerInputControls.GamePlayer.Movement.performed += OnMovementPerformed;
-        _playerInputControls.GamePlayer.Movement.canceled += OnMovementCanceled;
+        if (!InputManager.IsAvailable) return;
+
+        var controls = InputManager.Instance.Controls.GamePlayer;
+        controls.Enable();
+        controls.Movement.performed += OnMovementPerformed;
+        controls.Movement.canceled += OnMovementCanceled;
     }
 
     void OnDisable()
     {
-        _playerInputControls.GamePlayer.Disable();
-        _playerInputControls.GamePlayer.Movement.performed -= OnMovementPerformed;
-        _playerInputControls.GamePlayer.Movement.canceled -= OnMovementCanceled;
+        // 优化后的安全访问方式
+        if (!InputManager.IsAvailable) return;
+
+        var controls = InputManager.Instance.Controls.GamePlayer;
+        controls.Movement.performed -= OnMovementPerformed;
+        controls.Movement.canceled -= OnMovementCanceled;
+        controls.Disable();
     }
 
     private void FixedUpdate()

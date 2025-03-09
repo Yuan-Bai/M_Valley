@@ -6,11 +6,14 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerPickup : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("设置")]
     [SerializeField] private LayerMask itemLayer;
     [SerializeField] private float pickupRadius = 2f;
     [SerializeField] private float attractSpeed = 5f;
     [SerializeField] private float minPickupDistance = 0.3f;
+
+    [Header("事件")]
+    [SerializeField] private ItemEventChannel _pickupEventChannel;
     
     private Collider2D pickupCollider;
     private readonly HashSet<WorldItem> _processingItems = new();
@@ -47,6 +50,12 @@ public class PlayerPickup : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.TryGetComponent<WorldItem>(out WorldItem item))
+            item.SetColliderAvailable(true);
+    }
+
     private IEnumerator ProcessItemAttraction(WorldItem item)
     {
         // 禁用物品的碰撞体防止重复触发
@@ -55,12 +64,17 @@ public class PlayerPickup : MonoBehaviour
         // 吸引阶段
         yield return StartCoroutine(AttractItem(item));
 
-        // 执行拾取逻辑
-        if (InventoryController.Instance.TryAddItemToInventory(item.ItemID, item.quantity))
+        int quantity = 0;
+        _pickupEventChannel.RaiseEvent(new ItemPickupData{
+            ItemID = item.ItemID,
+            Quantity = item.quantity
+        }, remaining=>{quantity = remaining;});
+
+        if (quantity == 0)
         {
             ItemPool.Instance.ReturnItem(item);
         }
-        
+        item.quantity = quantity;
         _processingItems.Remove(item);
     }
 

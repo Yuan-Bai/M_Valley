@@ -37,7 +37,7 @@ public class MainThreadDispatcher : MonoSingleton<MainThreadDispatcher>
     }
 
     // 安全销毁时的清理
-    void OnDestroy()
+    protected override void OnDestroy()
     {
         lock (_queueLock)
         {

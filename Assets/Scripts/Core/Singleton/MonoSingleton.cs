@@ -1,41 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+
+public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
-    private static readonly object _lock = new();
-    private static readonly bool _isApplicationQuitting = false;
+    private static bool _isApplicationQuitting;
+    public static bool IsAvailable => !_isApplicationQuitting && _instance != null;
 
     public static T Instance
     {
-        get 
+        get
         {
-            if (_isApplicationQuitting) return null;
-            // 互斥访问
-            lock (_lock)
+            if (_isApplicationQuitting)
             {
-                if (_instance == null) 
-                {
-                    // 先查找（包含禁用对象）
-                    _instance = FindAnyObjectByType<T>(FindObjectsInactive.Include);
-                    if (_instance == null)
-                    {
-                        // 仍然不存在，再创建
-                        GameObject obj = new($"[{typeof(T).Name}]");
-                        _instance = obj.AddComponent<T>();
-                        DontDestroyOnLoad(obj);
-                    }
-                }
-                return _instance;
+                Debug.LogWarning($"[Singleton] Instance '{typeof(T)}' already destroyed. Returning null.");
+                return null;
             }
-        }
-    }
 
-    public static bool IsInitialized
-    {
-        get { return _instance != null; }
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<T>(true);
+                if (_instance == null)
+                {
+                    var obj = new GameObject($"[{typeof(T).Name}]");
+                    _instance = obj.AddComponent<T>();
+                    DontDestroyOnLoad(obj);
+                }
+            }
+            return _instance;
+        }
     }
 
     protected virtual void Awake()
@@ -43,20 +36,30 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-        else
-        {
-            _instance = this as T;
-            DontDestroyOnLoad(gameObject);
-        }
+
+        _instance = this as T;
+        DontDestroyOnLoad(gameObject);
+
+        // 保证切换场景时不会自动销毁
+        gameObject.hideFlags = HideFlags.None;
     }
 
-    // 新增手动销毁方法
-    public static void DestroyInstance()
+    protected virtual void OnApplicationQuit()
     {
+        _isApplicationQuitting = true;
         if (_instance != null)
         {
             Destroy(_instance.gameObject);
+            _instance = null;
+        }
+    }
+
+    protected virtual void OnDestroy()
+    {
+        if (_instance == this)
+        {
             _instance = null;
         }
     }

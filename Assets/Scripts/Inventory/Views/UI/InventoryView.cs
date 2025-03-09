@@ -1,147 +1,152 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Proxies;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryView : MonoBehaviour
 {
-    [Header("UI参数")]
-    [SerializeField] private Transform itemSlotsParent;
+    [Header("组件引用")]
+    [SerializeField] private List<Transform> _itemSlotsParent;
+    [SerializeField] private GameObject PlayerBag;
 
-    private List<ItemSlot> slots = new();  // 改用List存储按顺序排列的格子
-    private bool[] isEmptyArray; 
-    private int maxSlotCount;
-    private Dictionary<int, int> itemSlotMap = new();  // 物品ID到格子索引的映射
+    private InventoryController _controller;
+    private InventoryModel _model;
+    private List<ItemSlot> _slots = new();
+    private List<bool> isEmptyList = new();
+    private Dictionary<int, HashSet<int>> _itemToSlots = new();
+    private Dictionary<int, int> _slotToItem = new();
 
-    void Awake()
+    
+    IEnumerator Start() {
+        while(CrossSceneService.InventoryController == null) {
+            yield return null;
+        }
+        Initialize(CrossSceneService.InventoryController, CrossSceneService.InventoryController.Model);
+    }
+
+    public void Initialize(InventoryController controller, InventoryModel model)
     {
+        _controller = controller;
+        _model = model;
+        _controller.RegisterView(this);
         InitializeSlots();
+        _model.OnInventoryUpdated += OnInventoryUpdated;
     }
 
     public void InitializeSlots()
     {
-
-        foreach (Transform child in itemSlotsParent)
+        int slotIndex = 0;
+        foreach (Transform slotParent in _itemSlotsParent)
         {
-            if (child.TryGetComponent<ItemSlot>(out ItemSlot slot))
+            foreach (Transform child in slotParent)
             {
-                slots.Add(slot);
+                if (child.TryGetComponent<ItemSlot>(out ItemSlot slot))
+                {
+                    slot.Initialize(slotIndex, OnSlotClicked);
+                    _slots.Add(slot);
+                    isEmptyList.Add(true);
+                    slotIndex++;
+                }
             }
-        }
-        maxSlotCount = slots.Count;
-        isEmptyArray = new bool[maxSlotCount];
-        for (int i = 0; i < maxSlotCount; i++)
-        {
-            isEmptyArray[i] = true;
         }
     }
 
-    // public void InitializeAsync(Dictionary<int, int> items)
-    // {
-    //     // 初始化UI布局
-
-    //     // 是否需要重置
-        
-    //     //
-    //     int slotIndex = 0;
-    //     foreach (var item in items)
-    //     {
-    //         if (slotIndex > maxSlotCount) break;
-    //         InventoryController.Instance.GetItemModelAsync(item.Key, model =>
-    //         {
-    //             slots[slotIndex].Initialize(model, item.Value);
-    //         });
-    //     }
-    // }
-
-    public void Initialize(Dictionary<int, int> items)
+    private void OnSlotClicked(int slotIndex)
     {
-        ResetAllSlots();
-        int slotIndex = 0;
-        foreach (var item in items)
+        _controller.OnSlotClicked(slotIndex);
+    }
+
+    private void OnInventoryUpdated(Dictionary<int, ItemStackInfo> inventory)
+    {
+        // 增量更新逻辑
+        HashSet<int> processedItems = new();
+        
+        foreach (var pair in inventory) {
+            UpdateItemSlots(pair.Key, pair.Value);
+            processedItems.Add(pair.Key);
+        }
+
+        // 清理已不存在的物品
+        foreach (var itemID in _itemToSlots.Keys.Except(processedItems).ToList())
         {
-            if (slotIndex > maxSlotCount) break;
-            slots[slotIndex].Initialize(InventoryController.Instance.GetItemModel(item.Key), item.Value);
-            itemSlotMap[item.Key] = slotIndex;
-            isEmptyArray[slotIndex] = false;
+            RemoveItemFromView(itemID);
+        }
+    }
+
+    private void UpdateItemSlots(int itemID, ItemStackInfo stackInfo)
+    {
+        // 1. 同步现有slot
+        int slotIndex = 0;
+        foreach (var slotStack in stackInfo.Slots) {
+            if (!_itemToSlots.ContainsKey(itemID))
+            {
+                AddNewSlotForItem(itemID, slotStack.StackCount);
+            }else if (slotIndex >= _itemToSlots[itemID].Count)
+            {
+                // 需要新slot
+                AddNewSlotForItem(itemID, slotStack.StackCount);
+            } else
+            {
+                // 更新现有slot
+                int existingSlot = _itemToSlots[itemID].ElementAt(slotIndex);
+                _slots[existingSlot].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
+            }
             slotIndex++;
         }
     }
 
-    public void UpdateView(Dictionary<int, int> updatedItems)
-    {
-        foreach(var pair in itemSlotMap.ToList())
-        {
-            int itemID = pair.Key;
-            int slotIndex = pair.Value;
-
-            if (updatedItems.TryGetValue(itemID, out int newCount))
-            {
-                if (newCount > 0)
-                {
-                    slots[slotIndex].UpdateCount(newCount);
-                }
-                else
-                {
-                    slots[slotIndex].gameObject.SetActive(false);
-                    itemSlotMap.Remove(itemID);
-                }
-            }
-            else
-            {
-                // 物品不存在时释放格子
-                slots[slotIndex].gameObject.SetActive(false);
-                itemSlotMap.Remove(itemID);
-                isEmptyArray[slotIndex] = true;
-            }
+    private void AddNewSlotForItem(int itemID, int count) {
+        int slotIndex = FindAvailableSlotIndex();
+        if (slotIndex == -1) {
+            Debug.LogError("Inventory full!");
+            return;
         }
 
-        // 处理新增物品
-        foreach (var item in updatedItems)
+        _slots[slotIndex].UpdateItem(_controller.GetItemData(itemID), count);
+        _slotToItem[slotIndex] = itemID;
+        if (!_itemToSlots.ContainsKey(itemID))
         {
-            if (!itemSlotMap.ContainsKey(item.Key))
-            {
-                int availableIndex = FindAvailableSlotIndex();
-                if (availableIndex == -1)
-                {
-                    Debug.LogWarning("背包已满，无法添加新物品！");
-                    break;
-                }
-
-                slots[availableIndex].gameObject.SetActive(true);
-                slots[availableIndex].Initialize(
-                    InventoryController.Instance.GetItemModel(item.Key),
-                    item.Value
-                );
-                itemSlotMap.Add(item.Key, availableIndex);
-                isEmptyArray[availableIndex] = false;
-            }
+            _itemToSlots.Add(itemID, new HashSet<int>());
         }
+        _itemToSlots[itemID].Add(slotIndex);
+        isEmptyList[slotIndex] = false;
     }
 
-    // 查找第一个可用空格子
+    private void RemoveItemFromView(int itemID)
+    {
+        foreach (int slotIndex in _itemToSlots[itemID])
+        {
+            _slots[slotIndex].Clear();
+            _slotToItem.Remove(slotIndex);
+            isEmptyList[slotIndex] = true;
+        }
+        _itemToSlots.Remove(itemID);
+    }
+
+    public bool TryGetItemInSlot(int slotIndex, out int itemID) {
+        return _slotToItem.TryGetValue(slotIndex, out itemID);
+    }
+
+    public void SetSlotHighlight(int slotIndex, bool state) {
+        _slots[slotIndex].SetHighlight(state);
+    }
+
     private int FindAvailableSlotIndex()
     {
-        for (int i = 0; i < maxSlotCount; i++)
+        for (int i = 0; i < isEmptyList.Count; i++)
         {
-            if (isEmptyArray[i])
+            if (isEmptyList[i])
                 return i;
         }
         return -1;
     }
 
-    // 重置所有格子状态
-    private void ResetAllSlots()
+    public void ShowOrHideBag()
     {
-        foreach (ItemSlot slot in slots)
-        {
-            slot.gameObject.SetActive(false);
-        }
-        itemSlotMap.Clear();
-        for (int i = 0; i < maxSlotCount; i++)
-        {
-            isEmptyArray[i] = true;
-        }
+        PlayerBag.SetActive(!PlayerBag.activeSelf);
     }
 }
 
