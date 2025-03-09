@@ -5,6 +5,11 @@ public enum ItemType
     ReapableScenery,
 }
 
+public enum SlotType
+{
+    Box, Bag, Shop,
+}
+
 // public enum ItemCategory
 // {
 //     Seed,

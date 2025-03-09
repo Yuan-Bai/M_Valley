@@ -10,7 +10,6 @@ public class InventoryController : MonoSingleton<InventoryController>
     [SerializeField] private ItemDatabase_SO itemDatabase;
     private InventoryModel model;
     private InventoryView view;
-
     private Dictionary<int, ItemModel> cache = new();
 
     protected override void Awake()

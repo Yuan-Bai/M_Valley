@@ -19,7 +19,14 @@ public class InventoryModel
 
     public bool TryAddItem(int itemID, int quantity)
     {
-        items.Add(itemID, quantity);
+        if (items.ContainsKey(itemID))
+        {
+            items[itemID] += quantity;
+        }
+        else
+        {
+            items.Add(itemID, quantity);
+        }
         OnInventoryUpdated?.Invoke(items);
         return true;
     }
