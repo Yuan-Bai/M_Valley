@@ -61,48 +61,78 @@ public class InventoryView : MonoBehaviour
 
     private void OnInventoryUpdated(Dictionary<int, ItemStackInfo> inventory)
     {
-        // 增量更新逻辑
-        HashSet<int> processedItems = new();
-        
+        ClearSlots();
+        _slotToItem.Clear();
+        _itemToSlots.Clear();
         foreach (var pair in inventory) {
             UpdateItemSlots(pair.Key, pair.Value);
-            processedItems.Add(pair.Key);
         }
+        // // 增量更新逻辑
+        // HashSet<int> processedItems = new();
+        
+        // foreach (var pair in inventory) {
+        //     UpdateItemSlots(pair.Key, pair.Value);
+        //     processedItems.Add(pair.Key);
+        // }
 
-        // 清理已不存在的物品
-        foreach (var itemID in _itemToSlots.Keys.Except(processedItems).ToList())
+        // // 清理已不存在的物品
+        // foreach (var itemID in _itemToSlots.Keys.Except(processedItems).ToList())
+        // {
+        //     RemoveItemFromView(itemID);
+        // }
+    }
+
+    private void ClearSlots()
+    {
+        foreach(ItemSlot slot in _slots)
         {
-            RemoveItemFromView(itemID);
+            slot.Clear();
         }
     }
 
     private void UpdateItemSlots(int itemID, ItemStackInfo stackInfo)
     {
-        // 1. 同步现有slot
-        int slotIndex = 0;
-        foreach (var slotStack in stackInfo.Slots) {
-            if (!_itemToSlots.ContainsKey(itemID))
-            {
-                AddNewSlotForItem(itemID, slotStack.StackCount);
-            }else if (slotIndex >= _itemToSlots[itemID].Count)
-            {
-                // 需要新slot
-                AddNewSlotForItem(itemID, slotStack.StackCount);
-            } else
-            {
-                // 更新现有slot
-                int existingSlot = _itemToSlots[itemID].ElementAt(slotIndex);
-                _slots[existingSlot].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
-            }
-            slotIndex++;
+        _itemToSlots.Add(itemID, new HashSet<int>());
+        foreach (var slotStack in stackInfo.Slots)
+        {
+            _slots[slotStack.SlotIndex].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
+            _slotToItem[slotStack.SlotIndex] = itemID;
+            _itemToSlots[itemID].Add(slotStack.SlotIndex);
         }
+
+        // // 1. 同步现有slot
+        // int slotIndex = 0;
+        // foreach (var slotStack in stackInfo.Slots) {
+        //     if (!_itemToSlots.ContainsKey(itemID))
+        //     {
+        //         slotStack.SlotIndex = AddNewSlotForItem(itemID, slotStack.StackCount);
+        //     }
+        //     else if (slotIndex >= _itemToSlots[itemID].Count)
+        //     {
+        //         // 需要新slot
+        //         slotStack.SlotIndex = AddNewSlotForItem(itemID, slotStack.StackCount);
+        //     }
+        //     else
+        //     {
+        //         // 更新现有slot
+        //         int existingSlot = _itemToSlots[itemID].ElementAt(slotIndex);
+        //         _slots[existingSlot].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
+        //     }
+        //     slotIndex++;
+        // }
     }
 
-    private void AddNewSlotForItem(int itemID, int count) {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <param name="count"></param>
+    /// <returns>返回添加的slot的索引</returns>
+    private int AddNewSlotForItem(int itemID, int count) {
         int slotIndex = FindAvailableSlotIndex();
         if (slotIndex == -1) {
             Debug.LogError("Inventory full!");
-            return;
+            return -1;
         }
 
         _slots[slotIndex].UpdateItem(_controller.GetItemData(itemID), count);
@@ -113,6 +143,7 @@ public class InventoryView : MonoBehaviour
         }
         _itemToSlots[itemID].Add(slotIndex);
         isEmptyList[slotIndex] = false;
+        return slotIndex;
     }
 
     private void RemoveItemFromView(int itemID)

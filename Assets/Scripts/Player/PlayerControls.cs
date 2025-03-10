@@ -22,28 +22,12 @@ public class PlayerControls : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void OnEnable()
+    void OnMovement(InputValue value)
     {
-        if (!InputManager.IsAvailable) return;
-
-        var controls = InputManager.Instance.Controls.GamePlayer;
-        controls.Enable();
-        controls.Movement.performed += OnMovementPerformed;
-        controls.Movement.canceled += OnMovementCanceled;
+        _moveInput = value.Get<Vector2>().normalized;
     }
 
-    void OnDisable()
-    {
-        // 优化后的安全访问方式
-        if (!InputManager.IsAvailable) return;
-
-        var controls = InputManager.Instance.Controls.GamePlayer;
-        controls.Movement.performed -= OnMovementPerformed;
-        controls.Movement.canceled -= OnMovementCanceled;
-        controls.Disable();
-    }
-
-    private void FixedUpdate()
+    private void Update()
     {
         ApplyMovement();
         UpdateAnimation();

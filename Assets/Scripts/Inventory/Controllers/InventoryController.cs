@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,7 +10,7 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private ItemDatabase_SO _itemDatabase;
     [SerializeField] private InventoryView _view;
     [Header("事件")]
-    [SerializeField] private ItemEventChannel _pickupEventChannel;
+    [SerializeField] private ItemEventChannel _itemEventChannel;
     
     private InventoryModel _model;
     private HashSet<int> _selectedSlots = new();
@@ -22,24 +23,31 @@ public class InventoryController : MonoBehaviour
         CrossSceneService.InventoryController = this;
     }
 
-    void OnEnable() {
-        if (InputManager.IsAvailable)
-        {
-            var controls = InputManager.Instance.Controls.UI;
-            controls.Enable();
-            controls.Inventory.performed += OnInventoryPerformed;
-        }
-        _pickupEventChannel.OnItemPickedUp += HandleItemPickup;
+    void OnEnable()
+    {
+        StartCoroutine(DelayedSubscribe());
+
+        _itemEventChannel.OnItemPickedUp += HandleItemPickup;
+        _itemEventChannel.OnItemSwap += HandleItemSwap;
     }
 
-    void OnDisable() {
+    void OnDisable()
+    {
         if (InputManager.IsAvailable)
         {
-            var controls = InputManager.Instance.Controls.UI;
-            controls.Inventory.performed -= OnInventoryPerformed;
-            controls.Disable();
+            InputManager.Instance.Controls.UI.Inventory.performed -= OnInventoryPerformed;
+            InputManager.Instance.Controls.UI.Disable();
         }
-        _pickupEventChannel.OnItemPickedUp -= HandleItemPickup;
+
+        _itemEventChannel.OnItemPickedUp -= HandleItemPickup;
+        _itemEventChannel.OnItemSwap -= HandleItemSwap;
+    }
+
+    private IEnumerator DelayedSubscribe()
+    {
+        yield return new WaitUntil(() => InputManager.IsAvailable);
+        InputManager.Instance.Controls.UI.Enable();
+        InputManager.Instance.Controls.UI.Inventory.performed += OnInventoryPerformed;
     }
 
     public void RegisterView(InventoryView view)
@@ -56,6 +64,11 @@ public class InventoryController : MonoBehaviour
         callback?.Invoke(_model.TryAddItem(data.ItemID, data.Quantity));
     }
 
+    private void HandleItemSwap(int slotIndex1, int slotIndex2)
+    {
+        _model.SwapItem(slotIndex1, slotIndex2);
+    }
+
     public void OnSlotClicked(int slotIndex)
     {
         if (_view.TryGetItemInSlot(slotIndex, out int itemID)) {
@@ -70,11 +83,16 @@ public class InventoryController : MonoBehaviour
 
     private void ToggleSelection(int slotIndex, int itemID)
     {
-        ClearAllSelections();
-        _selectedSlots.Add(slotIndex);
-        _view.SetSlotHighlight(slotIndex, true);
-        
-        Debug.Log($"Selected {_selectedSlots.Count} slots with {itemID}");
+        if (_selectedSlots.Contains(slotIndex))
+        {
+            ClearAllSelections();
+        }
+        else
+        {
+            ClearAllSelections();
+            _selectedSlots.Add(slotIndex);
+            _view.SetSlotHighlight(slotIndex, true);
+        }
     }
 
     private void ClearAllSelections() {

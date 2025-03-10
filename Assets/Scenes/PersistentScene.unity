@@ -1234,7 +1234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemDatabase: {fileID: 11400000, guid: efe68adf1158bcf4c802610481f09414, type: 2}
   _view: {fileID: 0}
-  _pickupEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
+  _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
 --- !u!1 &2146444305
 GameObject:
   m_ObjectHideFlags: 0

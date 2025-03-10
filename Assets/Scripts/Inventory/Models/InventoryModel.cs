@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Collections;
 using UnityEngine;
 
 public class InventoryModel
@@ -9,6 +11,7 @@ public class InventoryModel
     private Dictionary<int, ItemStackInfo> _items = new();
     private readonly ItemDatabase_SO _itemDatabase;
     private int _maxSize = 40;
+    private bool[] _isFullArray = new bool[40];
 
     public InventoryModel(ItemDatabase_SO database)
     {
@@ -49,11 +52,13 @@ public class InventoryModel
         }
         while (remaining > 0 && !CheckFull())
         {
+            int slotIndex = FindAvailableSlotIndex();
             int newStack = Mathf.Min(remaining, itemData.MaxStack);
-            stackInfo.Slots.Add(new ItemStackInfo.SlotStack{
-                SlotIndex = -1,
+            stackInfo.Slots.Add(new SlotStack{
+                SlotIndex = slotIndex,
                 StackCount = newStack
             });
+            _isFullArray[slotIndex] = true;
             stackInfo.TotalCount += newStack;
             remaining -= newStack;
         }
@@ -89,6 +94,30 @@ public class InventoryModel
         OnInventoryUpdated?.Invoke(_items);
     }
 
+    public void SwapItem(int SlotIndex1, int SlotIndex2)
+    {
+        SlotStack tempSlotStack1 = null;
+        SlotStack tempSlotStack2 = null;
+        Debug.Log(SlotIndex1);
+        Debug.Log(_items[1012].Slots[1].SlotIndex);
+        foreach(var pair in _items)
+        {
+            tempSlotStack1 ??= pair.Value.Slots.Find(x => x.SlotIndex == SlotIndex1) ?? null;
+            tempSlotStack2 ??= pair.Value.Slots.Find(x => x.SlotIndex == SlotIndex2) ?? null;
+        }
+
+        Debug.Log(tempSlotStack1);
+        if (tempSlotStack1 != null)
+        {
+            tempSlotStack1.SlotIndex = SlotIndex2;
+        }
+        if (tempSlotStack2 != null)
+        {
+            tempSlotStack2.SlotIndex = SlotIndex1;
+        }
+        OnInventoryUpdated?.Invoke(_items);
+    }
+
     private bool CheckFull()
     {
         int slotUsedCount = 0;
@@ -97,5 +126,10 @@ public class InventoryModel
             slotUsedCount += pair.Value.Slots.Count;
         }
         return slotUsedCount == _maxSize;
+    }
+
+    private int FindAvailableSlotIndex()
+    {
+        return Array.FindIndex(_isFullArray, x => !x);
     }
 }
