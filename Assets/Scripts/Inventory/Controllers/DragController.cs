@@ -9,7 +9,11 @@ public class DragController : MonoBehaviour
     [SerializeField] private ItemEventChannel _itemEventChannel;
 
     private Vector2 _mousePos => InputManager.Instance.Controls.UI.Point.ReadValue<Vector2>();
+    #region 拖拽slot的部分参数
     private int _slotIndex = -1;
+    private int _itemID = -1;
+    private int _quantity = 0;
+    #endregion
 
     void OnEnable()
     {
@@ -25,11 +29,13 @@ public class DragController : MonoBehaviour
         _itemDragEventChannel.OnEndDrag -= HandleEndDrag;
     }
 
-    public void HandleBeginDrag(int slotIndex, Sprite dragSprite, Vector2 startPos)
+    public void HandleBeginDrag(ItemModel data, int quantity, int slotIndex, Vector2 startPos)
     {
         dragImage.gameObject.SetActive(true);
         _slotIndex = slotIndex;
-        dragImage.sprite = dragSprite;
+        _itemID = data.itemID;
+        _quantity = quantity;
+        dragImage.sprite = data.itemIcon;
         dragImage.transform.position = startPos;
 
     }
@@ -49,6 +55,11 @@ public class DragController : MonoBehaviour
             {
                 _itemEventChannel.RaiseItemSwap(_slotIndex, itemSlot._slotIndex);
             }
+        }
+        else
+        {
+            _itemEventChannel.RaiseItemDrop(_slotIndex, _quantity);
+            _itemEventChannel.RaiseCreateWorldItemWithVelocity(_itemID, _quantity, Camera.main.ScreenToWorldPoint(_mousePos));
         }
     }
 }

@@ -94,6 +94,13 @@ public class WorldItem : MonoBehaviour
         coll.enabled = isAble;
     }
 
+    public IEnumerator SetColliderDisableForSeconds(float seconds)
+    {
+        coll.enabled = false;
+        yield return new WaitForSeconds(seconds);
+        coll.enabled = true;
+    }
+
     public void SetVelocity(Vector2 velocity)
     {
         rb.velocity = velocity;

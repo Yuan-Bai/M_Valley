@@ -1,42 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Proxies;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class InventoryView : MonoBehaviour
 {
     [Header("组件引用")]
     [SerializeField] private List<Transform> _itemSlotsParent;
     [SerializeField] private GameObject PlayerBag;
+    [SerializeField] private ItemToolTip itemToolTip;
+
+    [Header("事件")]
+    [SerializeField] private InventoryEventChannel _InventoryEventChannel;
 
     private InventoryController _controller;
-    private InventoryModel _model;
     private List<ItemSlot> _slots = new();
-    private List<bool> isEmptyList = new();
     private Dictionary<int, HashSet<int>> _itemToSlots = new();
     private Dictionary<int, int> _slotToItem = new();
 
-    
-    IEnumerator Start() {
-        while(CrossSceneService.InventoryController == null) {
-            yield return null;
-        }
-        Initialize(CrossSceneService.InventoryController, CrossSceneService.InventoryController.Model);
+    void OnEnable()
+    {
+        _InventoryEventChannel.OnDeltaUpdate += HandleDeltaUpdate;
+        _InventoryEventChannel.OnFullUpdate += HandleFullUpdate;
+        _InventoryEventChannel.OnTipUpdate += HandleTipUpdate;
     }
 
-    public void Initialize(InventoryController controller, InventoryModel model)
+    void OnDisable()
+    {
+        _InventoryEventChannel.OnDeltaUpdate -= HandleDeltaUpdate;
+        _InventoryEventChannel.OnFullUpdate -= HandleFullUpdate;
+        _InventoryEventChannel.OnTipUpdate += HandleTipUpdate;
+    }
+
+    IEnumerator Start() {
+        yield return new WaitUntil(() => CrossSceneService.InventoryController != null);
+        Initialize(CrossSceneService.InventoryController);
+    }
+
+    public void Initialize(InventoryController controller)
     {
         _controller = controller;
-        _model = model;
         _controller.RegisterView(this);
         InitializeSlots();
-        _model.OnInventoryUpdated += OnInventoryUpdated;
     }
 
-    public void InitializeSlots()
+    private void InitializeSlots()
     {
         int slotIndex = 0;
         foreach (Transform slotParent in _itemSlotsParent)
@@ -47,7 +54,6 @@ public class InventoryView : MonoBehaviour
                 {
                     slot.Initialize(slotIndex, OnSlotClicked);
                     _slots.Add(slot);
-                    isEmptyList.Add(true);
                     slotIndex++;
                 }
             }
@@ -59,125 +65,101 @@ public class InventoryView : MonoBehaviour
         _controller.OnSlotClicked(slotIndex);
     }
 
-    private void OnInventoryUpdated(Dictionary<int, ItemStackInfo> inventory)
+    private void HandleDeltaUpdate(
+        IReadOnlyList<SlotChangeData> details, 
+        IReadOnlyList<ItemSlotModel> changedSlots)
     {
-        ClearSlots();
-        _slotToItem.Clear();
-        _itemToSlots.Clear();
-        foreach (var pair in inventory) {
-            UpdateItemSlots(pair.Key, pair.Value);
-        }
-        // // 增量更新逻辑
-        // HashSet<int> processedItems = new();
-        
-        // foreach (var pair in inventory) {
-        //     UpdateItemSlots(pair.Key, pair.Value);
-        //     processedItems.Add(pair.Key);
-        // }
-
-        // // 清理已不存在的物品
-        // foreach (var itemID in _itemToSlots.Keys.Except(processedItems).ToList())
-        // {
-        //     RemoveItemFromView(itemID);
-        // }
-    }
-
-    private void ClearSlots()
-    {
-        foreach(ItemSlot slot in _slots)
+        foreach (var slotModel in changedSlots)
         {
-            slot.Clear();
+            UpdateSingleSlot(slotModel);
         }
     }
 
-    private void UpdateItemSlots(int itemID, ItemStackInfo stackInfo)
+    private void HandleFullUpdate(IReadOnlyList<ItemSlotModel> slots)
     {
-        _itemToSlots.Add(itemID, new HashSet<int>());
-        foreach (var slotStack in stackInfo.Slots)
+        foreach (var slotModel in slots)
         {
-            _slots[slotStack.SlotIndex].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
-            _slotToItem[slotStack.SlotIndex] = itemID;
-            _itemToSlots[itemID].Add(slotStack.SlotIndex);
+            UpdateSingleSlot(slotModel);
         }
-
-        // // 1. 同步现有slot
-        // int slotIndex = 0;
-        // foreach (var slotStack in stackInfo.Slots) {
-        //     if (!_itemToSlots.ContainsKey(itemID))
-        //     {
-        //         slotStack.SlotIndex = AddNewSlotForItem(itemID, slotStack.StackCount);
-        //     }
-        //     else if (slotIndex >= _itemToSlots[itemID].Count)
-        //     {
-        //         // 需要新slot
-        //         slotStack.SlotIndex = AddNewSlotForItem(itemID, slotStack.StackCount);
-        //     }
-        //     else
-        //     {
-        //         // 更新现有slot
-        //         int existingSlot = _itemToSlots[itemID].ElementAt(slotIndex);
-        //         _slots[existingSlot].UpdateItem(_controller.GetItemData(itemID), slotStack.StackCount);
-        //     }
-        //     slotIndex++;
-        // }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="itemID"></param>
-    /// <param name="count"></param>
-    /// <returns>返回添加的slot的索引</returns>
-    private int AddNewSlotForItem(int itemID, int count) {
-        int slotIndex = FindAvailableSlotIndex();
-        if (slotIndex == -1) {
-            Debug.LogError("Inventory full!");
-            return -1;
-        }
-
-        _slots[slotIndex].UpdateItem(_controller.GetItemData(itemID), count);
-        _slotToItem[slotIndex] = itemID;
-        if (!_itemToSlots.ContainsKey(itemID))
+    private void HandleTipUpdate(ItemModel itemData, bool isHide)
+    {
+        if (isHide)
         {
-            _itemToSlots.Add(itemID, new HashSet<int>());
+            itemToolTip.gameObject.SetActive(false);
         }
-        _itemToSlots[itemID].Add(slotIndex);
-        isEmptyList[slotIndex] = false;
-        return slotIndex;
+        else
+        {
+            itemToolTip.UpdateTip(itemData);
+            itemToolTip.gameObject.SetActive(true);
+        }
     }
 
-    private void RemoveItemFromView(int itemID)
+    private void UpdateSingleSlot(ItemSlotModel slotModel)
     {
-        foreach (int slotIndex in _itemToSlots[itemID])
+        int slotIndex = slotModel.SlotIndex;
+        int itemId = slotModel.ItemID;
+        int count = slotModel.Count;
+
+        // 更新视图元素
+        ItemSlot slotUI = _slots[slotIndex];
+        bool isEmpty = itemId == -1;
+
+        // 更新字典跟踪
+        if (_slotToItem.TryGetValue(slotIndex, out int prevItemId))
         {
-            _slots[slotIndex].Clear();
+            // 移除旧物品的槽位引用
+            if (_itemToSlots.TryGetValue(prevItemId, out var slots))
+            {
+                slots.Remove(slotIndex);
+                if (slots.Count == 0) _itemToSlots.Remove(prevItemId);
+            }
             _slotToItem.Remove(slotIndex);
-            isEmptyList[slotIndex] = true;
         }
-        _itemToSlots.Remove(itemID);
+
+        if (!isEmpty)
+        {
+            // 更新新物品的槽位引用
+            if (!_itemToSlots.TryGetValue(itemId, out var slots))
+            {
+                slots = new HashSet<int>();
+                _itemToSlots[itemId] = slots;
+            }
+            slots.Add(slotIndex);
+            _slotToItem[slotIndex] = itemId;
+
+            // 更新UI显示
+            slotUI.UpdateItem(_controller.GetItemData(itemId), count);
+        }
+        else
+        {
+            slotUI.Clear();
+        }
     }
 
-    public bool TryGetItemInSlot(int slotIndex, out int itemID) {
+    public bool TryGetItemInSlot(int slotIndex, out int itemID) 
+    {
         return _slotToItem.TryGetValue(slotIndex, out itemID);
     }
 
-    public void SetSlotHighlight(int slotIndex, bool state) {
-        _slots[slotIndex].SetHighlight(state);
-    }
-
-    private int FindAvailableSlotIndex()
+    public void SetSlotHighlight(int slotIndex, bool state) 
     {
-        for (int i = 0; i < isEmptyList.Count; i++)
-        {
-            if (isEmptyList[i])
-                return i;
-        }
-        return -1;
+        _slots[slotIndex].SetHighlight(state);
     }
 
     public void ShowOrHideBag()
     {
         PlayerBag.SetActive(!PlayerBag.activeSelf);
     }
-}
 
+    // 调试方法
+    public void PrintInventoryState()
+    {
+        Debug.Log($"Tracked Items: {_itemToSlots.Count}");
+        foreach (var kvp in _itemToSlots)
+        {
+            Debug.Log($"Item {kvp.Key} in slots: {string.Join(",", kvp.Value)}");
+        }
+    }
+}

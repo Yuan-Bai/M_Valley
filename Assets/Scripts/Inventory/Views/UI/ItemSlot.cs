@@ -15,6 +15,7 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public int _slotIndex;
     private int _itemCount = 0;
+    public ItemModel _itemData;
     private Action<int> _onClickAction;
 
     public void Initialize(int index, Action<int> onClick) {
@@ -28,6 +29,7 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         _icon.sprite = data.itemIcon;
         _itemCount = count;
         _countText.text = count > 1 ? count.ToString() : "";
+        _itemData = data;
         _icon.gameObject.SetActive(true);
     }
 
@@ -37,15 +39,16 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void Clear() {
         _icon.gameObject.SetActive(false);
-        _countText.text = "";
         _itemCount = 0;
+        _countText.text = "";
+        _itemData = null;
         SetHighlight(false);
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (_itemCount == 0) return;
-        _dragEventChannel.RaiseBeginDrag(_slotIndex, _icon.sprite, transform.position);
+        _dragEventChannel.RaiseBeginDrag(_itemData, _itemCount, _slotIndex, transform.position);
     }
 
     public void OnDrag(PointerEventData eventData)

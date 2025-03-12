@@ -11,6 +11,7 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private InventoryView _view;
     [Header("事件")]
     [SerializeField] private ItemEventChannel _itemEventChannel;
+    [SerializeField] private InventoryEventChannel _InventoryEventChannel;
     
     private InventoryModel _model;
     private HashSet<int> _selectedSlots = new();
@@ -19,7 +20,7 @@ public class InventoryController : MonoBehaviour
 
     void Awake()
     {
-        _model = new InventoryModel(_itemDatabase);
+        _model = new InventoryModel(_itemDatabase, _InventoryEventChannel, Settings.InventoryCapcity);
         CrossSceneService.InventoryController = this;
     }
 
@@ -28,6 +29,7 @@ public class InventoryController : MonoBehaviour
         StartCoroutine(DelayedSubscribe());
 
         _itemEventChannel.OnItemPickedUp += HandleItemPickup;
+        _itemEventChannel.OnItemDrop += HandleItemDrop;
         _itemEventChannel.OnItemSwap += HandleItemSwap;
     }
 
@@ -40,6 +42,7 @@ public class InventoryController : MonoBehaviour
         }
 
         _itemEventChannel.OnItemPickedUp -= HandleItemPickup;
+        _itemEventChannel.OnItemDrop -= HandleItemDrop;
         _itemEventChannel.OnItemSwap -= HandleItemSwap;
     }
 
@@ -61,7 +64,12 @@ public class InventoryController : MonoBehaviour
     /// <param name="data"></param>
     /// <param name="callback"></param>
     private void HandleItemPickup(ItemPickupData data, Action<int> callback) {
-        callback?.Invoke(_model.TryAddItem(data.ItemID, data.Quantity));
+        callback?.Invoke(_model.AddItem(data.ItemID, data.Quantity));
+    }
+
+    private void HandleItemDrop(int slotIndedx, int quantity)
+    {
+        _model.RemoveItemFromSlot(slotIndedx, quantity);
     }
 
     private void HandleItemSwap(int slotIndex1, int slotIndex2)
@@ -103,11 +111,11 @@ public class InventoryController : MonoBehaviour
     }
 
     // 外部接口示例
-    public void AddItems(int itemID, int count) => _model.TryAddItem(itemID, count);
+    public void AddItems(int itemID, int count) => _model.AddItem(itemID, count);
     public void RemoveSelectedItems() {
         foreach (var slotIndex in _selectedSlots) {
             if (_view.TryGetItemInSlot(slotIndex, out int itemID)) {
-                _model.RemoveItem(itemID, 1); // 按当前实现每次移除一个
+                // _model.RemoveItem(itemID, 1); // 按当前实现每次移除一个
             }
         }
         ClearAllSelections();

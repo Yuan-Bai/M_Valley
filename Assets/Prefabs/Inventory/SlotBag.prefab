@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 6637162677161317881}
   - component: {fileID: 4259731685177025406}
   - component: {fileID: 726508228519806673}
+  - component: {fileID: 1092122865477396123}
   m_Layer: 5
   m_Name: SlotBag
   m_TagString: Untagged
@@ -221,6 +222,33 @@ MonoBehaviour:
   _button: {fileID: 4259731685177025406}
   _dragEventChannel: {fileID: 11400000, guid: ff94c73c03173fa46a4bd9122c5e2448, type: 2}
   _slotIndex: 0
+  _itemData:
+    itemID: 0
+    itemName: 
+    itemType: 0
+    itemIcon: {fileID: 0}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 0
+    canPickedup: 0
+    canDropped: 0
+    canCarried: 0
+    itemPrice: 0
+    sellPercentage: 0
+--- !u!114 &1092122865477396123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4259731685177025400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700db9112ac20a64e96427da43b16532, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _channel: {fileID: 11400000, guid: 4a5ef18ff305ca44aacc88967cbbf78c, type: 2}
 --- !u!1 &4259731685288657356
 GameObject:
   m_ObjectHideFlags: 0
