@@ -9,6 +9,8 @@ public class SceneEventChannel : ScriptableObject
     public event UnityAction OnBeforeSceneUnload;
     public event UnityAction OnAfterSceneLoad;
 
+    public event UnityAction<TeleportData> OnTeleportRequested;
+
     public void RaiseBeforeSceneUnload()
     {
         OnBeforeSceneUnload?.Invoke();
@@ -17,5 +19,10 @@ public class SceneEventChannel : ScriptableObject
     public void RaiseAfterSceneLoad()
     {
         OnAfterSceneLoad?.Invoke();
+    }
+
+    public void RaiseTeleportRequested(TeleportData teleportData)
+    {
+        OnTeleportRequested?.Invoke(teleportData);
     }
 }

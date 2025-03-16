@@ -17,6 +17,7 @@ public class PlayerControls : MonoBehaviour
     private Vector2 _moveInput;
     private Vector2 _smoothMovement;
     private bool _isMoving;
+    private bool _inputEnable = true;
 
     void Awake()
     {
@@ -31,7 +32,8 @@ public class PlayerControls : MonoBehaviour
 
     private void Update()
     {
-        ApplyMovement();
+        if(_inputEnable)
+            ApplyMovement();
         UpdateAnimation();
     }
 
@@ -61,5 +63,15 @@ public class PlayerControls : MonoBehaviour
                 animator.SetFloat("InputY", _moveInput.y);
             }
         }
+    }
+
+    public void MoveToPosition(Vector3 positionToGO)
+    {
+        transform.position = positionToGO;
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        _inputEnable = enabled;
     }
 }

@@ -24,7 +24,7 @@ public class ItemManager : MonoBehaviour
 
     private void HandleAfterSceneLoad()
     {
-        _worldItemParent = GameObject.FindWithTag("WordItemParent").transform;
+        _worldItemParent = GameObject.FindWithTag("WordItemParent")?.transform;
     }
 
     private void HandleCreateWorldItemWithVelocity(int itemID, int quantity, Vector2 targetPos)
