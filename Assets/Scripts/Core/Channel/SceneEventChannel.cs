@@ -6,16 +6,16 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "SceneEventChannel", menuName = "Events/SceneEventChannel")]
 public class SceneEventChannel : ScriptableObject
 {
-    public UnityAction OnBeforeSceneUnload;
-    public UnityAction OnAfterSceneLoad;
+    public event UnityAction OnBeforeSceneUnload;
+    public event UnityAction OnAfterSceneLoad;
 
     public void RaiseBeforeSceneUnload()
     {
-
+        OnBeforeSceneUnload?.Invoke();
     }
 
     public void RaiseAfterSceneLoad()
     {
-
+        OnAfterSceneLoad?.Invoke();
     }
 }

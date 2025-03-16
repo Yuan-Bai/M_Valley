@@ -10,6 +10,16 @@ public enum SlotType
     Box, Bag, Shop,
 }
 
+public enum ActionType
+{
+    None,Carry,Hold,
+}
+
+public enum PartType
+{
+    Hair,Body,Arm,
+}
+
 // public enum ItemCategory
 // {
 //     Seed,

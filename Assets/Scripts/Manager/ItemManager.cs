@@ -32,6 +32,7 @@ public class ItemManager : MonoBehaviour
         Vector2 startPos = _player.position;
         var item = Instantiate(_itemPrefab, startPos, Quaternion.identity, _worldItemParent);
         item.SetItemID(itemID);
+        item.quantity = quantity;
         StartCoroutine(item.SetColliderDisableForSeconds(1.5f));
         item.SetVelocity((targetPos-startPos).normalized * 7);
     }

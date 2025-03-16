@@ -12,14 +12,16 @@ public class PlayerControls : MonoBehaviour
     [Header("组件引用")]
     [SerializeField] private Rigidbody2D rb;
     // [SerializeField] private Collider2D collider2D;
-    [SerializeField] private Animator animator;
+    [SerializeField] private Animator[] _animators;
 
     private Vector2 _moveInput;
     private Vector2 _smoothMovement;
+    private bool _isMoving;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        _animators = GetComponentsInChildren<Animator>();
     }
 
     void OnMovement(InputValue value)
@@ -31,17 +33,6 @@ public class PlayerControls : MonoBehaviour
     {
         ApplyMovement();
         UpdateAnimation();
-    }
-
-    private void OnMovementPerformed(InputAction.CallbackContext context)
-    {
-        // normalized确保斜向移动不会过快
-        _moveInput = context.ReadValue<Vector2>().normalized;
-    }
-
-    private void OnMovementCanceled(InputAction.CallbackContext context)
-    {
-        _moveInput = Vector2.zero;
     }
 
     private void ApplyMovement()
@@ -57,16 +48,18 @@ public class PlayerControls : MonoBehaviour
 
     private void UpdateAnimation()
     {
-        if (animator == null) return;
+        if (_animators == null) return;
 
-        // bool isMoving = _smoothMovement.magnitude > 0.1f;
-        // animator.SetBool(IsMoving, isMoving);
+        _isMoving = _moveInput!= Vector2.zero;
 
-        // if (isMoving)
-        // {
-        //     // 保持最后移动方向
-        //     animator.SetFloat(MoveX, _smoothMovement.x);
-        //     animator.SetFloat(MoveY, _smoothMovement.y);
-        // }
+        foreach (var animator in _animators)
+        {
+            animator.SetBool("IsMoving", _isMoving);
+            if (_isMoving)
+            {
+                animator.SetFloat("InputX", _moveInput.x);
+                animator.SetFloat("InputY", _moveInput.y);
+            }
+        }
     }
 }

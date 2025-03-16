@@ -12,6 +12,7 @@ public class InventoryController : MonoBehaviour
     [Header("事件")]
     [SerializeField] private ItemEventChannel _itemEventChannel;
     [SerializeField] private InventoryEventChannel _InventoryEventChannel;
+    [SerializeField] private PlayerEventChannel _playerEventChannel;
     
     private InventoryModel _model;
     private HashSet<int> _selectedSlots = new();
@@ -94,13 +95,22 @@ public class InventoryController : MonoBehaviour
         if (_selectedSlots.Contains(slotIndex))
         {
             ClearAllSelections();
+
+            HoldItem(itemID, false);
         }
         else
         {
             ClearAllSelections();
             _selectedSlots.Add(slotIndex);
             _view.SetSlotHighlight(slotIndex, true);
+
+            HoldItem(itemID, true);
         }
+    }
+
+    private void HoldItem(int itemID, bool isSelect)
+    {
+        _playerEventChannel.RaiseHoldItem(_itemDatabase.GetItemByID(itemID), isSelect);
     }
 
     private void ClearAllSelections() {
