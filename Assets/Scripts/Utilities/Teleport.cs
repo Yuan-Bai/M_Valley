@@ -35,6 +35,7 @@ public class Teleport : MonoBehaviour
         // 禁用玩家输入
         if (other.TryGetComponent<PlayerControls>(out var controls))
             controls.SetInputEnabled(false);
+            controls.SetVelocity(Vector2.zero);
 
         // 创建传送数据包
         var teleportData = new TeleportData {

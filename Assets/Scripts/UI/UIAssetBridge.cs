@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
-// UIAssetBridge.cs
 [CreateAssetMenu(menuName = "System/UI Asset Bridge")]
 public class UIAssetBridge : ScriptableObject
 {
     public CanvasGroup FadeCanvasGroup;
+    public Image CursorImage;
 }
 

@@ -10,7 +10,7 @@ public class PlayerControls : MonoBehaviour
     [SerializeField] private float deceleration = 15f;
 
     [Header("组件引用")]
-    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Rigidbody2D _rb;
     // [SerializeField] private Collider2D collider2D;
     [SerializeField] private Animator[] _animators;
 
@@ -21,7 +21,7 @@ public class PlayerControls : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        _rb = GetComponent<Rigidbody2D>();
         _animators = GetComponentsInChildren<Animator>();
     }
 
@@ -34,6 +34,7 @@ public class PlayerControls : MonoBehaviour
     {
         if(_inputEnable)
             ApplyMovement();
+
         UpdateAnimation();
     }
 
@@ -44,8 +45,7 @@ public class PlayerControls : MonoBehaviour
             _moveInput,
             (_moveInput.magnitude > 0 ? acceleration : deceleration) * Time.fixedDeltaTime
             );
-
-         rb.velocity = _smoothMovement * moveSpeed;
+         _rb.velocity = _smoothMovement * moveSpeed;
     }
 
     private void UpdateAnimation()
@@ -73,5 +73,10 @@ public class PlayerControls : MonoBehaviour
     public void SetInputEnabled(bool enabled)
     {
         _inputEnable = enabled;
+    }
+
+    public void SetVelocity(Vector2 velocity)
+    {
+        _rb.velocity = velocity;
     }
 }

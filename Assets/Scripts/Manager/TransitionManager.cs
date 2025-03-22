@@ -35,9 +35,10 @@ public class TransitionManager : MonoBehaviour
         // 确保初始场景加载
         if (string.IsNullOrEmpty(_currentScene))
         {
-            _currentScene = _startScene;
-            SceneManager.LoadScene(_startScene, LoadSceneMode.Additive);
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(_startScene));
+            yield return TransitionAsync(new TeleportData{
+                targetPosition = new Vector3(0, 0, 0),
+                targetScene = _startScene
+            });
         }
         // 等待 UI 场景加载完成
         while (_uiAssetBridge.FadeCanvasGroup == null)
@@ -63,6 +64,7 @@ public class TransitionManager : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentScene))
         {
             _sceneEventChannel.RaiseBeforeSceneUnload();
+            Debug.Log("wwww");
             yield return SceneManager.UnloadSceneAsync(_currentScene);
         }
 

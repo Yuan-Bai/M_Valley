@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,11 +14,13 @@ public class ItemToolTip : MonoBehaviour
 
     public void UpdateTip(ItemModel itemData)
     {
+        // InputManager.Instance.Controls.UI.Enable();
         nameText.text = itemData.itemName;
         typeText.text = TypeToString(itemData.itemType);
         descriptionText.text = itemData.itemDescription;
         value.text = ((int)(itemData.itemPrice * itemData.sellPercentage)).ToString();
         transform.position = MousePos + new Vector2(0, 40);
+        // Debug.Log("MousePos=>" + MousePos);
         gameObject.SetActive(true);
     }
 

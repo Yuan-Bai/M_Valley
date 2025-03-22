@@ -11,11 +11,12 @@ public class WorldItem : MonoBehaviour
     [SerializeField] private ItemDatabase_SO itemDatabase;
     
     private SpriteRenderer spriteRenderer;
-    private BoxCollider2D coll;
-    private Rigidbody2D rb;
+    private BoxCollider2D _coll;
+    private Rigidbody2D _rb;
     private ItemModel itemModel;
     private bool isInitializing;
 
+    public bool isThrowing;
     public int ItemID => itemID;
     public int quantity = 1;
 
@@ -50,12 +51,12 @@ public class WorldItem : MonoBehaviour
     private void InitializeComponents()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        coll = GetComponent<BoxCollider2D>();
-        rb = GetComponent<Rigidbody2D>();
+        _coll = GetComponent<BoxCollider2D>();
+        _rb = GetComponent<Rigidbody2D>();
         spriteRenderer.sortingLayerName = "Instance";
         spriteRenderer.spriteSortPoint = SpriteSortPoint.Pivot;
-        coll.isTrigger = true;
-        rb.gravityScale = 0;
+        _coll.isTrigger = true;
+        _rb.gravityScale = 0;
     }
 
     private void ValidateSortingLayer()
@@ -73,8 +74,8 @@ public class WorldItem : MonoBehaviour
         Bounds spriteBounds = spriteRenderer.sprite.bounds;
         Vector2 scaledSize = spriteBounds.size * colliderScaleFactor;
         
-        coll.size = scaledSize;
-        coll.offset = spriteBounds.center;
+        _coll.size = scaledSize;
+        _coll.offset = spriteBounds.center;
     }
 
     public void SetItemID(int newID)
@@ -91,18 +92,75 @@ public class WorldItem : MonoBehaviour
 
     public void SetColliderAvailable(bool isAble)
     {
-        coll.enabled = isAble;
+        _coll.enabled = isAble;
     }
 
     public IEnumerator SetColliderDisableForSeconds(float seconds)
     {
-        coll.enabled = false;
+        _coll.enabled = false;
+        // coll.excludeLayers 
         yield return new WaitForSeconds(seconds);
-        coll.enabled = true;
+        _coll.enabled = true;
     }
 
     public void SetVelocity(Vector2 velocity)
     {
-        rb.velocity = velocity;
+        _rb.velocity = velocity;
     }
+
+    public void Throw(Vector3 velocity, float totalTime, float gravity, CircleCollider2D collider)
+    {
+        StartCoroutine(ThrowRoutine(velocity, totalTime, gravity, collider));
+    }
+
+    private IEnumerator ThrowRoutine(Vector3 velocity, float totalTime, float gravity, CircleCollider2D collider)
+    {
+        isThrowing = true;
+        // 运动逻辑
+        float costTime = 0;
+        float vx = velocity.x;
+        float vy = velocity.y;
+        float vz = velocity.z;
+        float cos45 = Mathf.Cos(Mathf.PI/4);
+
+        while (costTime < totalTime)
+        {
+            costTime += Time.deltaTime;
+            vz -= Time.deltaTime * gravity;
+            
+            // 使用伪3D坐标转换
+            Vector2 movement = new Vector2(
+                vx * Time.deltaTime,
+                (vy + vz ) * cos45 * Time.deltaTime // 调整投影系数
+            );
+            transform.Translate(movement, Space.World);
+            yield return null;
+        }
+        yield return new WaitForSeconds(0.5f);
+        isThrowing = false;
+    }
+
 }
+
+//     public void Throw(float totalTime, float horizontalSpeed ,float verticalSpeed,float gravity)
+//     {
+//         StartCoroutine(SetColliderDisableForSeconds(2));
+//         StartCoroutine(ThrowRoutine(totalTime, horizontalSpeed, verticalSpeed, gravity));
+//     }
+
+//     private IEnumerator ThrowRoutine(float totalTime, float horizontalSpeed ,float verticalSpeed,float gravity)
+//     {
+//         // 初始状态设置
+//         // _rb.isKinematic = false;
+//         SetVelocity(new Vector2(horizontalSpeed, verticalSpeed));
+//         float costTime = 0;
+//         while(costTime<totalTime)
+//         {
+//             costTime += Time.deltaTime;
+//             verticalSpeed -= Time.deltaTime * gravity;
+//             SetVelocity(new Vector2(horizontalSpeed, verticalSpeed));
+//             yield return null;
+//         }
+//         SetVelocity(Vector2.zero);
+//     }
+// }

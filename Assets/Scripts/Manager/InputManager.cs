@@ -12,7 +12,16 @@ public class InputManager : MonoSingleton<InputManager>
     {
         base.Awake();
         InitializeControls();
-        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnEnable()
+    {
+        Controls.UI.Enable();
+    }
+
+    void OnDisable()
+    {
+        Controls.UI.Disable();
     }
 
     private void InitializeControls()
@@ -48,16 +57,8 @@ public class InputManager : MonoSingleton<InputManager>
                && Instance.Controls != null && Instance.isInitialized;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        Controls?.Disable();
-        EnableGameplayInput();
-    }
-
     protected override void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-        
+    {        
         if (Controls != null)
         {
             Controls.Dispose();

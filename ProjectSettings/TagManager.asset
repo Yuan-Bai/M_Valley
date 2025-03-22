@@ -13,8 +13,8 @@ TagManager:
   - Tree
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Tele
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
   - name: GroundMiddle
     uniqueID: 2076637139
     locked: 0
+  - name: Water
+    uniqueID: 3337284979
+    locked: 0
   - name: GroundTop
     uniqueID: 2645576355
     locked: 0
@@ -60,9 +63,6 @@ TagManager:
     locked: 0
   - name: Dig
     uniqueID: 1160335391
-    locked: 0
-  - name: Water
-    uniqueID: 3337284979
     locked: 0
   - name: Instance
     uniqueID: 2182175241

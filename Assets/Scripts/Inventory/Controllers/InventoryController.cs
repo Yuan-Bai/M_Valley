@@ -95,7 +95,6 @@ public class InventoryController : MonoBehaviour
         if (_selectedSlots.Contains(slotIndex))
         {
             ClearAllSelections();
-
             HoldItem(itemID, false);
         }
         else
@@ -110,6 +109,7 @@ public class InventoryController : MonoBehaviour
 
     private void HoldItem(int itemID, bool isSelect)
     {
+        _itemEventChannel.RasieItemSelect(_itemDatabase.GetItemByID(itemID), isSelect);
         _playerEventChannel.RaiseHoldItem(_itemDatabase.GetItemByID(itemID), isSelect);
     }
 

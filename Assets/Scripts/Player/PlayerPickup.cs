@@ -43,7 +43,7 @@ public class PlayerPickup : MonoBehaviour
         if (!IsItemValid(other)) return;
         
         var item = other.GetComponent<WorldItem>();
-        if (item != null && !_processingItems.Contains(item))
+        if (item != null && !_processingItems.Contains(item) && !item.isThrowing)
         {
             _processingItems.Add(item);
             StartCoroutine(ProcessItemAttraction(item));

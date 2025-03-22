@@ -6,19 +6,23 @@ using System.Collections;
 public class SceneBoundaryManager : MonoBehaviour
 {
     [SerializeField] private CinemachineConfiner confiner;
+
+    [Header("事件通道")]
+    [SerializeField] private SceneEventChannel _sceneEventChannel;
+
     private Collider2D _currentBounds;
 
     private void OnEnable()
     {
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        _sceneEventChannel.OnAfterSceneLoad += HandleAfterSceneLoad;
     }
 
     private void OnDisable()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        _sceneEventChannel.OnAfterSceneLoad -= HandleAfterSceneLoad;
     }
 
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    private void HandleAfterSceneLoad()
     {
         FindNewBoundary();
     }
