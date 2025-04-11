@@ -41,7 +41,8 @@ public class AnimatorOverrider : MonoBehaviour
         {
             ItemType.Seed => ActionType.Hold,
             ItemType.Commodity => ActionType.Hold,
-            ItemType.HoeTool => ActionType.Carry,
+            ItemType.HoeTool => ActionType.Hoe,
+            ItemType.WaterTool => ActionType.Water,
             _ => ActionType.None,
         };
         if (!isSelect)

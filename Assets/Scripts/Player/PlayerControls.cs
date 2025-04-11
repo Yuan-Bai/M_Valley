@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,10 +15,17 @@ public class PlayerControls : MonoBehaviour
     // [SerializeField] private Collider2D collider2D;
     [SerializeField] private Animator[] _animators;
 
+    [Header("事件通道")]
+    [SerializeField] private PlayerEventChannel _playerEventChannel;
+    [SerializeField] private GridEventChannel _gridEventChannel;
+
     private Vector2 _moveInput;
     private Vector2 _smoothMovement;
     private bool _isMoving;
     private bool _inputEnable = true;
+    private bool _useTool;
+    private float _mouseX;
+    private float _mouseY;
 
     void Awake()
     {
@@ -25,10 +33,46 @@ public class PlayerControls : MonoBehaviour
         _animators = GetComponentsInChildren<Animator>();
     }
 
+    void OnEnable()
+    {
+        _playerEventChannel.OnToolAnimation += HandleToolAnimation;
+    }
+
+    void OnDisable()
+    {
+        _playerEventChannel.OnToolAnimation -= HandleToolAnimation;
+    }
+
+    #region 事件
+
     void OnMovement(InputValue value)
     {
         _moveInput = value.Get<Vector2>().normalized;
     }
+
+    private void HandleToolAnimation(ItemType itemType, Vector2 pos)
+    {
+        if (_useTool)
+            return;
+
+        if (itemType != ItemType.Seed && itemType != ItemType.Commodity && itemType != ItemType.Furniture)
+        {
+            _mouseX = pos.x - transform.position.x;
+            _mouseY = pos.y - transform.position.y;
+            if (Mathf.Abs(_mouseX) > Mathf.Abs(_mouseY))
+                _mouseY = 0;
+            else
+                _mouseX = 0;
+            
+            StartCoroutine(UseToolRoutine(itemType, pos));
+        }
+        else
+        {
+            _gridEventChannel.RaiseTileUpdate(itemType, pos);
+        }
+    }
+
+    #endregion
 
     private void Update()
     {
@@ -63,6 +107,24 @@ public class PlayerControls : MonoBehaviour
                 animator.SetFloat("InputY", _moveInput.y);
             }
         }
+    }
+
+    private IEnumerator UseToolRoutine(ItemType itemType, Vector2 pos)
+    {
+        _useTool = true;
+        _inputEnable = false;
+        yield return null;
+        foreach (var animator in _animators)
+        {
+            animator.SetTrigger("UseTool");
+            animator.SetFloat("MouseX", _mouseX);
+            animator.SetFloat("MouseY", _mouseY);
+        }
+        yield return new WaitForSeconds(0.45f);
+        _gridEventChannel.RaiseTileUpdate(itemType, pos);
+        yield return new WaitForSeconds(0.35f);
+        _useTool = false;
+        _inputEnable = true;
     }
 
     public void MoveToPosition(Vector3 positionToGO)
