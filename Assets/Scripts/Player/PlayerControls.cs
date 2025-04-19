@@ -50,10 +50,11 @@ public class PlayerControls : MonoBehaviour
         _moveInput = value.Get<Vector2>().normalized;
     }
 
-    private void HandleToolAnimation(ItemType itemType, Vector2 pos)
+    private void HandleToolAnimation(ItemModel itemModel, Vector2 pos)
     {
         if (_useTool)
             return;
+        ItemType itemType= itemModel.itemType;
 
         if (itemType != ItemType.Seed && itemType != ItemType.Commodity && itemType != ItemType.Furniture)
         {
@@ -64,11 +65,11 @@ public class PlayerControls : MonoBehaviour
             else
                 _mouseX = 0;
             
-            StartCoroutine(UseToolRoutine(itemType, pos));
+            StartCoroutine(UseToolRoutine(itemModel, pos));
         }
         else
         {
-            _gridEventChannel.RaiseTileUpdate(itemType, pos);
+            _gridEventChannel.RaiseTileUpdate(itemModel, pos);
         }
     }
 
@@ -78,6 +79,8 @@ public class PlayerControls : MonoBehaviour
     {
         if(_inputEnable)
             ApplyMovement();
+        else
+            _rb.velocity = Vector2.zero;
 
         UpdateAnimation();
     }
@@ -109,7 +112,7 @@ public class PlayerControls : MonoBehaviour
         }
     }
 
-    private IEnumerator UseToolRoutine(ItemType itemType, Vector2 pos)
+    private IEnumerator UseToolRoutine(ItemModel itemModel, Vector2 pos)
     {
         _useTool = true;
         _inputEnable = false;
@@ -121,7 +124,7 @@ public class PlayerControls : MonoBehaviour
             animator.SetFloat("MouseY", _mouseY);
         }
         yield return new WaitForSeconds(0.45f);
-        _gridEventChannel.RaiseTileUpdate(itemType, pos);
+        _gridEventChannel.RaiseTileUpdate(itemModel, pos);
         yield return new WaitForSeconds(0.35f);
         _useTool = false;
         _inputEnable = true;

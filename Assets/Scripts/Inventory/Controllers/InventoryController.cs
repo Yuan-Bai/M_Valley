@@ -31,6 +31,7 @@ public class InventoryController : MonoBehaviour
 
         _itemEventChannel.OnItemPickedUp += HandleItemPickup;
         _itemEventChannel.OnItemDrop += HandleItemDrop;
+        _itemEventChannel.OnSelectItemDrop += HandleSelectItemDrop;
         _itemEventChannel.OnItemSwap += HandleItemSwap;
     }
 
@@ -44,6 +45,7 @@ public class InventoryController : MonoBehaviour
 
         _itemEventChannel.OnItemPickedUp -= HandleItemPickup;
         _itemEventChannel.OnItemDrop -= HandleItemDrop;
+        _itemEventChannel.OnSelectItemDrop -= HandleSelectItemDrop;
         _itemEventChannel.OnItemSwap -= HandleItemSwap;
     }
 
@@ -71,6 +73,18 @@ public class InventoryController : MonoBehaviour
     private void HandleItemDrop(int slotIndedx, int quantity)
     {
         _model.RemoveItemFromSlot(slotIndedx, quantity);
+    }
+
+    private void HandleSelectItemDrop(int quantity)
+    {
+        foreach (var slot in _selectedSlots)
+        {
+            if (_model.RemoveItemFromSlot(slot, quantity) <= 0)
+            {
+                _playerEventChannel.RaiseHoldItem(null, false);
+                _itemEventChannel.RasieItemSelect(null, false);
+            }
+        }
     }
 
     private void HandleItemSwap(int slotIndex1, int slotIndex2)

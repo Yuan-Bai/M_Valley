@@ -24,6 +24,7 @@ public class ItemManager : MonoBehaviour
         _sceneEventChannel.OnBeforeSceneUnload += HandleBeforeSceneUnload;
         _sceneEventChannel.OnAfterSceneLoad += HandleAfterSceneLoad;
         _itemEventChannel.OnCreateWorldItemWithVelocity += HandleCreateWorldItemWithVelocity;
+        _itemEventChannel.OnCreateItem += HandleCreateItem;
     }
 
     void OnDisable()
@@ -31,18 +32,9 @@ public class ItemManager : MonoBehaviour
         _sceneEventChannel.OnBeforeSceneUnload -= HandleBeforeSceneUnload;
         _sceneEventChannel.OnAfterSceneLoad -= HandleAfterSceneLoad;
         _itemEventChannel.OnCreateWorldItemWithVelocity -= HandleCreateWorldItemWithVelocity;
+        _itemEventChannel.OnCreateItem -= HandleCreateItem;
     }
 
-    private void HandleBeforeSceneUnload()
-    {
-        SaveAllItemsBeforeSceneUnload();
-    }
-
-    private void HandleAfterSceneLoad()
-    {
-        _worldItemParent = GameObject.FindWithTag("WordItemParent")?.transform;
-        RecoverAllItemsAfterSceneLoad();
-    }
 
     private void SaveAllItemsBeforeSceneUnload()
     {
@@ -68,7 +60,6 @@ public class ItemManager : MonoBehaviour
             _sceneItemDict.Add(activeSceneName, currentSceneItemList);
         }
     }
-
     private void RecoverAllItemsAfterSceneLoad()
     {
         string activeSceneName = SceneManager.GetActiveScene().name;
@@ -85,6 +76,18 @@ public class ItemManager : MonoBehaviour
                 CreateWorldItem(item);
             }
         }
+    }
+
+    #region 事件
+    private void HandleBeforeSceneUnload()
+    {
+        SaveAllItemsBeforeSceneUnload();
+    }
+
+    private void HandleAfterSceneLoad()
+    {
+        _worldItemParent = GameObject.FindWithTag("WordItemParent")?.transform;
+        RecoverAllItemsAfterSceneLoad();
     }
 
     private void HandleCreateWorldItemWithVelocity(int itemID, int quantity, Vector2 targetPos)
@@ -104,11 +107,29 @@ public class ItemManager : MonoBehaviour
         item.Throw(new Vector3(vx, vy, _velocityZ), totalTime, _gravity, _player.GetComponent<CircleCollider2D>());
     }
 
+    private void HandleCreateItem(int itemID, Vector2 pos, int radius, int quantity)
+    {
+        Vector2 startPos = GenerateRandomPoint(pos, radius);
+        var item = Instantiate(_itemPrefab, startPos, Quaternion.identity, _worldItemParent);
+        item.SetItemID(itemID);
+        item.quantity = quantity;
+    }
+    #endregion
+
     private void CreateWorldItem(SceneItem sceneItem)
     {
         var item = Instantiate(_itemPrefab, sceneItem.pos.ToVector3(), Quaternion.identity, _worldItemParent);
         item.SetItemID(sceneItem.itemID);
         item.quantity = sceneItem.quantity;
+    }
+
+    private Vector2 GenerateRandomPoint(Vector2 pos, int radius)
+    {
+        float randomRadius = Mathf.Sqrt(Random.Range(0f, 1f)) * radius;
+        float randomAngle = Random.Range(0f, Mathf.PI*2);
+        float xOffset = randomRadius*Mathf.Cos(randomAngle);
+        float yOffset = randomRadius*Mathf.Sin(randomAngle);
+        return new Vector2(pos.x+xOffset, pos.y+yOffset);
     }
 
 }

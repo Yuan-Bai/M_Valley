@@ -688,15 +688,24 @@ MonoBehaviour:
   - actionType: 0
     partType: 2
     overrideController: {fileID: 22100000, guid: 172abd819149aa343a1e3ba7cd53eb34, type: 2}
-  - actionType: 3
-    partType: 3
-    overrideController: {fileID: 22100000, guid: d3bd63e6232873a408ec119f1897efbc, type: 2}
   - actionType: 0
     partType: 3
     overrideController: {fileID: 22100000, guid: 9d036b3e0c28d9e429a4098b8d85db4f, type: 2}
+  - actionType: 3
+    partType: 3
+    overrideController: {fileID: 22100000, guid: d3bd63e6232873a408ec119f1897efbc, type: 2}
   - actionType: 4
     partType: 3
     overrideController: {fileID: 22100000, guid: 77703e2f92f517147b6b9823cafab5c4, type: 2}
+  - actionType: 5
+    partType: 3
+    overrideController: {fileID: 22100000, guid: 8f2aae0e24b69ef4cba8d98974b5d51b, type: 2}
+  - actionType: 6
+    partType: 3
+    overrideController: {fileID: 22100000, guid: 6d569917c4228c64d901e26c8be133ef, type: 2}
+  - actionType: 5
+    partType: 2
+    overrideController: {fileID: 22100000, guid: f8e4339e3758fb54b8afc78865122db5, type: 2}
 --- !u!1 &618628767
 GameObject:
   m_ObjectHideFlags: 3
@@ -1039,6 +1048,9 @@ MonoBehaviour:
   waterTile: {fileID: 11400000, guid: 64cc38d3d032179408fb4ac3978ea1ef, type: 2}
   _sceneEventChannel: {fileID: 11400000, guid: 2fb27d81abfc37e4194e8e6e257f7904, type: 2}
   _gridEventChannel: {fileID: 11400000, guid: 85bbf67e764a3c64a92884c3aec27579, type: 2}
+  _timeEventChannel: {fileID: 11400000, guid: 10fdd1c34e17b7549ae3858399476887, type: 2}
+  _cropEventChannel: {fileID: 11400000, guid: 004d79e084ad9174f92e93b59cdb1304, type: 2}
+  _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
 --- !u!4 &1238583076
 Transform:
   m_ObjectHideFlags: 0
@@ -1468,12 +1480,60 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 2, y: 3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!1 &1745826359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1745826361}
+  - component: {fileID: 1745826360}
+  m_Layer: 0
+  m_Name: CropManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1745826360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745826359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ced4c837125e24290ac26eda886b0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cropDataBase: {fileID: 11400000, guid: e51b5a8c448460e4eaa3ae78c6320274, type: 2}
+  _sceneEventChannel: {fileID: 11400000, guid: 2fb27d81abfc37e4194e8e6e257f7904, type: 2}
+  _timeEventChannel: {fileID: 11400000, guid: 10fdd1c34e17b7549ae3858399476887, type: 2}
+  _cropEventChannel: {fileID: 11400000, guid: 004d79e084ad9174f92e93b59cdb1304, type: 2}
+--- !u!4 &1745826361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745826359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1783749185
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,7 +12,7 @@ public enum SlotType
 
 public enum ActionType
 {
-    None,Carry,Hold,Hoe,Water
+    None,Carry,Hold,Hoe,Water,Reap,Axe,
 }
 
 public enum PartType

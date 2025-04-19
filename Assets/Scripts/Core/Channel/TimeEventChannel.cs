@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class TimeEventChannel : ScriptableObject
 {
     public event UnityAction<GameTime> OnTimeChanged;
+    public event UnityAction OnDayChanged;
     public event UnityAction<Season> OnSeasonChanged;
 
     public void RaiseTimeChanged(GameTime currentTime)
@@ -17,5 +18,10 @@ public class TimeEventChannel : ScriptableObject
     public void RaiseSeasonChanged(Season season)
     {
         OnSeasonChanged?.Invoke(season);
+    }
+
+    public void RaiseDayChanged()
+    {
+        OnDayChanged?.Invoke();
     }
 }

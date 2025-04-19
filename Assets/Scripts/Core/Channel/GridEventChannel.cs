@@ -6,10 +6,10 @@ using UnityEngine.Events;
 [CreateAssetMenu(menuName = "Events/GridEventChannel")]
 public class GridEventChannel : ScriptableObject
 {
-    public event UnityAction<ItemType, Vector3> OnTileUpdate;
+    public event UnityAction<ItemModel, Vector3> OnTileUpdate;
 
-    public void RaiseTileUpdate(ItemType itemType, Vector3 pos)
+    public void RaiseTileUpdate(ItemModel itemModel, Vector3 pos)
     {
-        OnTileUpdate?.Invoke(itemType, pos);
+        OnTileUpdate?.Invoke(itemModel, pos);
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Item Database", menuName = "Inventory/Item Database")]
+[CreateAssetMenu(fileName = "Item Database", menuName = "SO/Item Database")]
 public class ItemDatabase_SO : ScriptableObject
 {
     public List<ItemModel> itemDetailsList;

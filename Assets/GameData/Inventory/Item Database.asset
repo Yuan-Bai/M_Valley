@@ -84,12 +84,12 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: f140b8cf7b2cb44c5bf34bb9bb3292f4, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 712efb3c5425e4d62aa03accb5b7a498, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u88C5\u5728\u9EBB\u5E03\u5C0F\u888B\u91CC\u7684\u5757\u830E\u5207\u7247\uFF0C\u636E\u8BF4\u57CB\u5728\u571F\u91CC\u65F6\u4F1A\u53D1\u51FA\u5FAE\u5495\u565C\u7684\u5438\u6C34\u58F0\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 50
     sellPercentage: 0
   - itemID: 1007
     itemName: "\u8304\u5B50\u79CD\u5B50"
@@ -97,12 +97,12 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 9f9b0e3a4d4144c4f857b9c99e50a8be, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 7fa27847daa7848cd8221a18379f7a21, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u65B0\u65B0\u6708\u5F62\u7D2B\u8272\u79CD\u5B50\uFF0C\u79CD\u58F3\u4E0A\u7684\u82B1\u7EB9\u4F1A\u968F\u6210\u719F\u5EA6\u4ECE\u94F6\u767D\u8F6C\u4E3A\u6697\u7D2B\u3002\u6708\u5F62\u7D2B\u8272\u79CD\u5B50\uFF0C\u79CD\u58F3\u4E0A\u7684\u82B1\u7EB9\u4F1A\u968F\u6210\u719F\u5EA6\u4ECE\u94F6\u767D\u8F6C\u4E3A\u6697\u7D2B\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 90
     sellPercentage: 0
   - itemID: 1008
     itemName: "\u8461\u8404\u79CD\u5B50"
@@ -110,12 +110,12 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 13fd782ac3661413abe57fc16343e499, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: eff80b331cf5c4ca49471d8604c3b52e, type: 3}
     MaxStack: 99
-    itemDescription: "\u5403\u8461\u8404\u4E0D\u5410\u8461\u8404\u76AE"
+    itemDescription: "\u9700\u8981\u642D\u8BBE\u6C34\u6676\u652F\u67B6\u7684\u85E4\u8513\u79CD\u5B50\uFF0C\u591C\u95F4\u4F1A\u81EA\u4E3B\u7F20\u7ED5\u652F\u6491\u7269\u751F\u957F\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 120
     sellPercentage: 0
   - itemID: 1009
     itemName: "\u7EA2\u841D\u535C\u79CD\u5B50"
@@ -123,7 +123,7 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 2597146da57814c789a59eda5740c9bf, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 0f5a527a6777043739c58b084887ec12, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u7EA2\u8272\u5916\u76AE\u7684\u8FF7\u4F60\u79CD\u5B50\u7403\uFF0C\u6492\u79CD\u65F6\u5076\u5C14\u4F1A\u5438\u5F15\u91CE\u5154\u5077\u5077\u5228\u8D70\u51E0\u9897\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
@@ -136,12 +136,12 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: a4cf1d099c0994049a38e73bf9d629dd, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 738078985c017481f8d443cf821e26b5, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u523B\u7740\u7B11\u8138\u7684\u6241\u5E73\u79CD\u5B50\uFF0C\u64AD\u79CD\u524D\u9700\u8981\u7528\u6708\u5149\u7167\u5C04\u6FC0\u6D3B\u751F\u957F\u5492\u8BED\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 150
     sellPercentage: 0
   - itemID: 1011
     itemName: "\u7EA2\u8FA3\u6912\u79CD\u5B50"
@@ -149,12 +149,12 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 967cc7f8afb724dd0915a57883580633, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 38565caefc0504f3f9cb90ce3c5d3c3c, type: 3}
     MaxStack: 99
-    itemDescription: "\u5636~\u4E0D\u8FA3"
+    itemDescription: "\u88C5\u5728\u9632\u706B\u9676\u7F50\u91CC\u7684\u706B\u7EA2\u7C7D\u7C92\uFF0C\u5305\u88C5\u4E0A\u753B\u7740\u6D41\u6CEA\u9AB7\u9AC5\u5934\u8B66\u793A\u6807\u5FD7\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 80
     sellPercentage: 0
   - itemID: 1012
     itemName: "\u756A\u8304\u79CD\u5B50"
@@ -162,25 +162,25 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: cfbba8cf50d164f2182e614389427136, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: b2299da4eb0be49f0843d0e1fbafbed1, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u51DD\u80F6\u72B6\u79CD\u5B50\u56CA\uFF0C\u634F\u7206\u65F6\u4F1A\u6E85\u51FA\u9178\u751C\u6C41\u6DB2\uFF0C\u6DF1\u53D7\u5B69\u7AE5\u6076\u4F5C\u5267\u9752\u7750\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 60
     sellPercentage: 0
   - itemID: 1013
-    itemName: "\u767D\u841D\u535C"
+    itemName: "\u767D\u841D\u535C\u79CD\u5B50"
     itemType: 0
     itemIcon: {fileID: 21300000, guid: 0689ebc0f067f41fa98586e5b574896f, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: 58c6799e544ae49a48186335b7f16ba0, type: 3}
     MaxStack: 99
-    itemDescription: 
+    itemDescription: "\u96EA\u7ED2\u82B1\u822C\u7684\u84EC\u677E\u79CD\u5B50\u56E2\uFF0C\u64AD\u79CD\u540E\u7B2C\u4E00\u665A\u4F1A\u5728\u5730\u9762\u51DD\u7ED3\u971C\u82B1\u3002"
     itemUseRadius: 1
     canPickedup: 1
     canDropped: 1
     canCarried: 1
-    itemPrice: 0
+    itemPrice: 40
     sellPercentage: 0
   - itemID: 1014
     itemName: "\u897F\u74DC\u79CD\u5B50"
@@ -188,6 +188,32 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 5cfc475b0e3804e81b1233785b390bde, type: 3}
     itemOnWorldIcon: {fileID: 21300000, guid: e4373ab1bca4244e89aa5c948b14f09f, type: 3}
     MaxStack: 99
+    itemDescription: "\u5E26\u9ED1\u767D\u6761\u7EB9\u7684\u88C5\u7532\u79CD\u58F3\uFF0C\u64AD\u79CD\u524D\u9700\u8981\u7528\u6C34\u6676\u9524\u6572\u51FA\u88C2\u7F1D\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 180
+    sellPercentage: 0
+  - itemID: 1015
+    itemName: "\u84DD\u8393\u79CD\u5B50"
+    itemType: 0
+    itemIcon: {fileID: 21300000, guid: 145ecd71b23ff4ef1ae4b88ba1820deb, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: a190370c9a26a43aa9c3e596f8976fc4, type: 3}
+    MaxStack: 99
+    itemDescription: "\u5305\u88F9\u5728\u51B0\u6676\u4E2D\u7684\u6DF1\u84DD\u7C7D\u7C92\uFF0C\u603B\u6563\u53D1\u7740\u8BA9\u68EE\u6797\u7CBE\u7075\u8E81\u52A8\u7684\u751C\u817B\u6C14\u606F\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 200
+    sellPercentage: 0
+  - itemID: 1016
+    itemName: "\u9614\u53F6\u6811\u79CD\u5B50"
+    itemType: 0
+    itemIcon: {fileID: 21300000, guid: 9930d861d3ccf4ddc87536ae85a56425, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
     itemDescription: 
     itemUseRadius: 1
     canPickedup: 1
@@ -195,16 +221,224 @@ MonoBehaviour:
     canCarried: 1
     itemPrice: 0
     sellPercentage: 0
-  - itemID: 1015
-    itemName: "\u84DD\u8393"
+  - itemID: 1017
+    itemName: "\u6A61\u6811\u79CD\u5B50"
     itemType: 0
-    itemIcon: {fileID: 21300000, guid: 145ecd71b23ff4ef1ae4b88ba1820deb, type: 3}
-    itemOnWorldIcon: {fileID: 21300000, guid: a190370c9a26a43aa9c3e596f8976fc4, type: 3}
+    itemIcon: {fileID: 21300000, guid: 1ae82374d0e4445118e47ce07e8426fe, type: 3}
+    itemOnWorldIcon: {fileID: 0}
     MaxStack: 99
     itemDescription: 
-    itemUseRadius: 0
-    canPickedup: 0
-    canDropped: 0
-    canCarried: 0
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
     itemPrice: 0
     sellPercentage: 0
+  - itemID: 1018
+    itemName: "\u571F\u8C46"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 59a2ce6cc735e4cd3a3da1bad8629303, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u6CBE\u7740\u6CE5\u571F\u82B3\u9999\u7684\u6734\u5B9E\u7F8E\u5473\uFF0C\u77FF\u5DE5\u4EEC\u603B\u5728\u80CC\u5305\u89D2\u843D\u585E\u4E24\u4E2A\u4EE5\u9632\u997F\u6655\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 120
+    sellPercentage: 0.9
+  - itemID: 1019
+    itemName: "\u8304\u5B50"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 18dd810d9429d489cae29f0f11a4d177, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u751F\u5403\u5E73\u6DE1\u65E0\u5947\uFF0C\u4F46\u7528\u96F7\u51FB\u6728\u70E4\u5236\u540E\u4F1A\u53D8\u6210\u5E26\u7535\u7684\u7D2B\u8272\u53D1\u5149\u6599\u7406\uFF01"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 200
+    sellPercentage: 0.9
+  - itemID: 1020
+    itemName: "\u8461\u8404"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 567730b76d77440f09c9bb6adee6040f, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u534A\u900F\u660E\u679C\u8089\u4E2D\u60AC\u6D6E\u7740\u6DB2\u6001\u7D2B\u6C34\u6676\uFF0C\u917F\u9152\u65F6\u52A0\u5165\u9F99\u820C\u5170\u4F1A\u5F15\u53D1\u5C0F\u8303\u56F4\u7206\u70B8\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 250
+    sellPercentage: 0.9
+  - itemID: 1021
+    itemName: "\u7EA2\u841D\u535C"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 3fa10b9ef4ceb407f953f7783c0c5ee4, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u8106\u8106\u751C\u591A\u6C41\u7684\u5E94\u6025\u96F6\u98DF\uFF0C\u739B\u59AE\u7684\u5976\u725B\u5403\u4E86\u4F1A\u4EA7\u51FA\u7C89\u7EA2\u8272\u725B\u5976\uFF01\u751C\u591A\u6C41\u7684\u5E94\u6025\u96F6\u98DF\uFF0C\u739B\u59AE\u7684\u5976\u725B\u5403\u4E86\u4F1A\u4EA7\u51FA\u7C89\u7EA2\u8272\u725B\u5976\uFF01"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 80
+    sellPercentage: 0.9
+  - itemID: 1022
+    itemName: "\u5357\u74DC"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 709947d08509b408db26e4136a0232ee, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: ad070f26e0cdc4eafa6b593dbdcbe9ff, type: 3}
+    MaxStack: 99
+    itemDescription: "\u8DB3\u591F\u5F53\u4E34\u65F6\u907F\u96BE\u6240\u7684\u5DE8\u578B\u5357\u74DC\uFF0C\u5973\u5DEB\u6765\u8BBF\u65F6\u4F1A\u7528\u5B83\u7EC3\u4E60\u98DE\u884C\u626B\u5E1A\u9776\u5FC3\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 350
+    sellPercentage: 0.9
+  - itemID: 1023
+    itemName: "\u7EA2\u8FA3\u6912"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 3fcb9b37a91af4aed85fcc8c19c7d112, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u8868\u9762\u9690\u7EA6\u6D6E\u73B0\u91D1\u8272\u88C2\u7EB9\u7684\u9B54\u6CD5\u8FA3\u6912\uFF0C\u5403\u4E0B\u540E\u55B7\u706B\u8868\u6F14\u53EF\u6301\u7EED30\u5206\u949F\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 180
+    sellPercentage: 0.9
+  - itemID: 1024
+    itemName: "\u756A\u8304"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 829edba0aa42246a2a95e69096ea5862, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u6C99\u74E4\u756A\u8304\u81EA\u5E26\u6D77\u76D0\u9999\u6C14\uFF0C\u683C\u65AF\u7528\u5B83\u8C03\u5236\u7684\u8840\u8165\u739B\u4E3D\u80FD\u6CBB\u6108\u5BBF\u9189\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 150
+    sellPercentage: 0.9
+  - itemID: 1025
+    itemName: "\u767D\u841D\u535C"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: ead453a0ee8ee49329522ee30394ee3a, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u751F\u5543\u50CF\u8584\u8377\u5473\u51B0\u68CD\uFF0C\u54C8\u7EF4\u533B\u751F\u7528\u5B83\u5236\u4F5C\u300E\u6025\u901F\u51B7\u51BB\u6B62\u8840\u5242\u300F\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 110
+    sellPercentage: 0.9
+  - itemID: 1026
+    itemName: "\u897F\u74DC"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 09de733bd01a24ca6bc8f78192d8f358, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u6572\u51FB\u9876\u90E8\u4F1A\u53D1\u51FA\u949F\u9E23\u58F0\u7684\u5B8C\u7F8E\u7403\u5F62\uFF0C\u9C7C\u5858\u653E\u5165\u897F\u74DC\u4F1A\u5438\u5F15\u6CB3\u7AE5\u6D6E\u51FA\u6C34\u9762\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 400
+    sellPercentage: 0.9
+  - itemID: 1027
+    itemName: "\u84DD\u8393"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 1683a58ffb6f243019e331431169e852, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: "\u8868\u76AE\u95EA\u70C1\u661F\u8292\u7684\u9B54\u6CD5\u6D46\u679C\uFF0C\u71AC\u591C\u7814\u7A76\u8005\u9760\u5B83\u4FDD\u6301\u6E05\u9192\u76F4\u5230\u65E5\u51FA\u3002"
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 80
+    sellPercentage: 0.9
+  - itemID: 1028
+    itemName: " \u9614\u53F6\u6728"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 5809980803ddf45a1aa8df14dbc00394, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: 0d5f887d0ba144b7180f3e33336beac5, type: 3}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 10
+    sellPercentage: 0.9
+  - itemID: 1029
+    itemName: "\u6A61\u6728"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 6bdcabcb3e8684660981c3dbfa135c8d, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: 018bd79f696fb400584536e445976758, type: 3}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 10
+    sellPercentage: 0.9
+  - itemID: 1030
+    itemName: "\u7267\u8349"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: e457a28d7c05742a6bcb044458883809, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: e8ebe711ec1de4697a10d8c2f3f39f20, type: 3}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 5
+    sellPercentage: 0.9
+  - itemID: 1031
+    itemName: "\u77F3\u5934"
+    itemType: 1
+    itemIcon: {fileID: 21300000, guid: 0d1bd60a4df28461a802344fdf5d9478, type: 3}
+    itemOnWorldIcon: {fileID: 21300000, guid: 45a3ea64377134f4299e757a1becb6df, type: 3}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 20
+    sellPercentage: 0.9
+  - itemID: 1032
+    itemName: "\u6905\u5B50"
+    itemType: 2
+    itemIcon: {fileID: 21300000, guid: 35f35fec54071471ea798838348d5913, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 500
+    sellPercentage: 0.9
+  - itemID: 1033
+    itemName: "\u684C\u5B50"
+    itemType: 2
+    itemIcon: {fileID: 21300000, guid: 6002a3f97c68f43619712d1cdc65bba6, type: 3}
+    itemOnWorldIcon: {fileID: 0}
+    MaxStack: 99
+    itemDescription: 
+    itemUseRadius: 1
+    canPickedup: 1
+    canDropped: 1
+    canCarried: 1
+    itemPrice: 1000
+    sellPercentage: 0.9

@@ -64,7 +64,6 @@ public class TransitionManager : MonoBehaviour
         if (!string.IsNullOrEmpty(_currentScene))
         {
             _sceneEventChannel.RaiseBeforeSceneUnload();
-            Debug.Log("wwww");
             yield return SceneManager.UnloadSceneAsync(_currentScene);
         }
 

@@ -9,6 +9,7 @@ public class TimeManager : MonoBehaviour
     
     private bool _isPaused;
     private GameTime _currentTime;
+    private int _previousDay = -1;
     private Season _previousSeason = Season.None;
     private Coroutine _timeCoroutine;
 
@@ -45,8 +46,14 @@ public class TimeManager : MonoBehaviour
                 yield return new WaitForSeconds(_realSecondsPerGameSecond);
                 _currentTime.AddSecond(1);
                 _timeEventChannel.RaiseTimeChanged(_currentTime);
+                if (_previousDay != _currentTime.Day)
+                {
+                    _timeEventChannel.RaiseDayChanged();
+                    _previousDay = _currentTime.Day;
+                }
                 if (_currentTime.Season != _previousSeason)
                 {
+                    Debug.Log(_currentTime.Season);
                     _timeEventChannel.RaiseSeasonChanged(_currentTime.Season);
                     _previousSeason = _currentTime.Season;
                 }
@@ -64,12 +71,12 @@ public class GameTime
     public int totalTime;
 
     // 游戏世界10s为1分钟，6分钟为一小时，10天为1季度，1月即一个季节
-    public int Second => (totalTime % 10) *10;
-    public int Minute => (totalTime / 10 % 6) * 10;
+    public int Second => totalTime % 10 *10;
+    public int Minute => totalTime / 10 % 6 * 10;
     public int Hour => totalTime / 60 % 24;
     public int Day => totalTime / 1440 % 10 + 1;
     public int Month => totalTime / 14400 % 4 + 1;
-    public Season Season => (Season)Month;
+    public Season Season => (Season)(Month-1);
     public int Year => totalTime / 57600 % 9999 + 2025;
 
     public void AddSecond(int detalSecond)

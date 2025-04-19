@@ -7,15 +7,15 @@ public class PlayerEventChannel : ScriptableObject
 {
     public event UnityAction<ItemModel, bool> OnHoldItem;
 
-    public event UnityAction<ItemType, Vector2> OnToolAnimation;
+    public event UnityAction<ItemModel, Vector2> OnToolAnimation;
 
     public void RaiseHoldItem(ItemModel itemData, bool isSelect)
     {
         OnHoldItem?.Invoke(itemData, isSelect);
     }
 
-    public void RaiseToolAnimation(ItemType itemType, Vector2 pos)
+    public void RaiseToolAnimation(ItemModel itemModel, Vector2 pos)
     {
-        OnToolAnimation?.Invoke(itemType, pos);
+        OnToolAnimation?.Invoke(itemModel, pos);
     }
 }

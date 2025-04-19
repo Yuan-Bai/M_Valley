@@ -4382,6 +4382,7 @@ MonoBehaviour:
   dragImage: {fileID: 77699628}
   _itemDragEventChannel: {fileID: 11400000, guid: ff94c73c03173fa46a4bd9122c5e2448, type: 2}
   _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
+  _playerEventChannel: {fileID: 11400000, guid: d172cde54c061ca4e88aeb7ef397f259, type: 2}
 --- !u!222 &846050553
 CanvasRenderer:
   m_ObjectHideFlags: 0

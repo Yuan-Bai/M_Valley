@@ -117,8 +117,7 @@ public class CursorManager : MonoBehaviour
         if (_itemModel == null || _cursorImage == null) return;
         if (CheckMouseVaild(_itemModel.itemUseRadius))
         {
-            // _gridEventChannel.RaiseTileUpdate(_itemModel.itemType, CellMousePos);
-            _playerEventChannel.RaiseToolAnimation(_itemModel.itemType, WorldMousePos);
+            _playerEventChannel.RaiseToolAnimation(_itemModel, WorldMousePos);
         }
     }
 

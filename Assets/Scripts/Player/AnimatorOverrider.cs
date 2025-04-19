@@ -37,12 +37,20 @@ public class AnimatorOverrider : MonoBehaviour
     private void HandleHoldItem(ItemModel itemData, bool isSelect)
     {
         // TODO
+        if (itemData==null)
+        {
+            _itemHolder.enabled = false;
+            SwitchAnimator(ActionType.None);
+            return;
+        }
         ActionType currentActionType = itemData.itemType switch
         {
             ItemType.Seed => ActionType.Hold,
             ItemType.Commodity => ActionType.Hold,
             ItemType.HoeTool => ActionType.Hoe,
             ItemType.WaterTool => ActionType.Water,
+            ItemType.ReapTool => ActionType.Reap,
+            ItemType.ChopTool => ActionType.Axe,
             _ => ActionType.None,
         };
         if (!isSelect)
@@ -53,7 +61,7 @@ public class AnimatorOverrider : MonoBehaviour
         else
         {
             _itemHolder.enabled = true;
-            _itemHolder.sprite = itemData.itemOnWorldIcon;
+            _itemHolder.sprite = itemData.itemOnWorldIcon == null ? itemData.itemIcon:itemData.itemOnWorldIcon;
         }
         SwitchAnimator(currentActionType);
     }

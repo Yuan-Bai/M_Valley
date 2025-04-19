@@ -4,9 +4,13 @@ using UnityEngine.UI;
 
 public class DragController : MonoBehaviour
 {
+    [Header("组件引用")]
     [SerializeField] private Image dragImage;
+
+    [Header("事件通道")]
     [SerializeField] private ItemDragEventChannel _itemDragEventChannel;
     [SerializeField] private ItemEventChannel _itemEventChannel;
+    [SerializeField] private PlayerEventChannel _playerEventChannel;
 
     private Vector2 MousePos => InputManager.Instance.Controls.UI.Point.ReadValue<Vector2>();
     #region 拖拽slot的部分参数
@@ -60,6 +64,8 @@ public class DragController : MonoBehaviour
         {
             _itemEventChannel.RaiseItemDrop(_slotIndex, _quantity);
             _itemEventChannel.RaiseCreateWorldItemWithVelocity(_itemID, _quantity, Camera.main.ScreenToWorldPoint(MousePos));
+            _playerEventChannel.RaiseHoldItem(null, false);
+            _itemEventChannel.RasieItemSelect(null, false);
         }
     }
 }
