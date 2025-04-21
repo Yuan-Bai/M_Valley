@@ -60,8 +60,15 @@ public class AnimatorOverrider : MonoBehaviour
         }
         else
         {
-            _itemHolder.enabled = true;
-            _itemHolder.sprite = itemData.itemOnWorldIcon == null ? itemData.itemIcon:itemData.itemOnWorldIcon;
+            if (currentActionType == ActionType.Hold)
+            {
+                _itemHolder.enabled = true;
+                _itemHolder.sprite = itemData.itemOnWorldIcon == null ? itemData.itemIcon:itemData.itemOnWorldIcon;
+            }
+            else
+            {
+                _itemHolder.enabled = false;
+            }
         }
         SwitchAnimator(currentActionType);
     }

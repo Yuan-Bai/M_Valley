@@ -104,7 +104,7 @@ public class ItemManager : MonoBehaviour
         item.SetItemID(itemID);
         item.quantity = quantity;
         // 执行丢弃
-        item.Throw(new Vector3(vx, vy, _velocityZ), totalTime, _gravity, _player.GetComponent<CircleCollider2D>());
+        item.Throw(new Vector3(vx, vy, _velocityZ), totalTime, _gravity);
     }
 
     private void HandleCreateItem(int itemID, Vector2 pos, int radius, int quantity)
@@ -113,6 +113,9 @@ public class ItemManager : MonoBehaviour
         var item = Instantiate(_itemPrefab, startPos, Quaternion.identity, _worldItemParent);
         item.SetItemID(itemID);
         item.quantity = quantity;
+        float vy = 5;
+        float totalTime = 2*vy/_gravity;
+        item.Throw(new Vector3(0, vy, 0), totalTime, _gravity);
     }
     #endregion
 

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3384459489444150081}
   - component: {fileID: 6666888441480597407}
   - component: {fileID: 6666888441480597406}
+  - component: {fileID: -3033410859474469329}
+  - component: {fileID: 684734271120154432}
   m_Layer: 3
   m_Name: TreeStage04
   m_TagString: Untagged
@@ -190,3 +192,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   includeInactive: 0
+--- !u!114 &-3033410859474469329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3384459489444150087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2a31e429673784c86bb13ff77b027e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 684734271120154432}
+  _isAutoGenerateCollider: 0
+  _colliderScaleFactor: 0.95
+  _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
+  _animationEventChannel: {fileID: 11400000, guid: c69da94a697b5ba41bafce6439650a7a, type: 2}
+  cropModel:
+    seedItemID: 0
+    growthDays: 
+    growthPrefabs: []
+    growthSprites: []
+    seasons: 
+    harvestToolType: 
+    requireActionCount: 0
+    transferItemID: -1
+    producedItemID: 
+    producedMinAmount: 
+    producedMaxAmount: 
+    spawnRadius: {x: 0, y: 0}
+    daysToRegrow: 0
+    regrowTimes: 0
+    generateAtPlayerPosition: 0
+    hasAnimation: 0
+    hasParticalEffect: 0
+  harvestable: 0
+--- !u!95 &684734271120154432
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3384459489444150087}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6ea41cf186b36e24a8f6098ce6f48736, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

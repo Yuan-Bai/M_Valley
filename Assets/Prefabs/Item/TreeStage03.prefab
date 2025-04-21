@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7490741319265304698}
   - component: {fileID: 1552050570929976484}
   - component: {fileID: 1552050570929976485}
+  - component: {fileID: -2336627376445470868}
   m_Layer: 3
   m_Name: TreeStage03
   m_TagString: Untagged
@@ -190,3 +191,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   includeInactive: 0
+--- !u!114 &-2336627376445470868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7490741319265304700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e2a31e429673784c86bb13ff77b027e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  _isAutoGenerateCollider: 0
+  _colliderScaleFactor: 0.95
+  _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
+  _animationEventChannel: {fileID: 11400000, guid: c69da94a697b5ba41bafce6439650a7a, type: 2}
+  cropModel:
+    seedItemID: 0
+    growthDays: 
+    growthPrefabs: []
+    growthSprites: []
+    seasons: 
+    harvestToolType: 
+    requireActionCount: 0
+    transferItemID: -1
+    producedItemID: 
+    producedMinAmount: 
+    producedMaxAmount: 
+    spawnRadius: {x: 0, y: 0}
+    daysToRegrow: 0
+    regrowTimes: 0
+    generateAtPlayerPosition: 0
+    hasAnimation: 0
+    hasParticalEffect: 0
+  harvestable: 0

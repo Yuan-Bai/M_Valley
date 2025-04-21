@@ -24,3 +24,8 @@ public enum GridType
 {
     Diggable, Dropable, NPCObstacle, PlaceFurniture,
 }
+
+public enum ParticleEffectTpye
+{
+    None, LeavesFall01, LeavesFall02,
+}

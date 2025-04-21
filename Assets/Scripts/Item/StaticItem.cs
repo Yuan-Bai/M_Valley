@@ -3,9 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D), typeof(SpriteRenderer))]
 public class StaticItem : MonoBehaviour
 {
-
+    [Header("组件引用")]
+    [SerializeField] private Animator _animator;
     [Header("碰撞体缩放大小")]
-    [SerializeField] private float colliderScaleFactor = 0.95f;
+    [SerializeField] private bool _isAutoGenerateCollider = true;
+    [SerializeField] private float _colliderScaleFactor = 0.95f;
 
     [Header("事件通道")]
     [SerializeField] private ItemEventChannel _itemEventChannel;
@@ -13,6 +15,8 @@ public class StaticItem : MonoBehaviour
     private BoxCollider2D _collider;
     private SpriteRenderer _spriteRenderer;
     private int harvestActionCount;
+    private int requireActionCount;
+    private bool hasAnimation;
 
     public CropModel cropModel;
     public bool harvestable;
@@ -23,6 +27,13 @@ public class StaticItem : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    public void Initialize(CropModel cropModel)
+    {
+        this.cropModel = cropModel;
+        requireActionCount = cropModel.requireActionCount;
+        hasAnimation = cropModel.hasAnimation;
+    }
+
     public void SetSprite(Sprite sprite)
     {
         _spriteRenderer.sprite = sprite;
@@ -30,10 +41,10 @@ public class StaticItem : MonoBehaviour
 
     public void UpdateCollider()
     {
-        if(_spriteRenderer.sprite == null) return;
+        if(_spriteRenderer.sprite == null || !_isAutoGenerateCollider) return;
 
         Bounds spriteBounds = _spriteRenderer.sprite.bounds;
-        Vector2 scaledSize = spriteBounds.size * colliderScaleFactor;
+        Vector2 scaledSize = spriteBounds.size * _colliderScaleFactor;
         
         _collider.size = scaledSize;
         _collider.offset = spriteBounds.center;
@@ -41,10 +52,14 @@ public class StaticItem : MonoBehaviour
 
     public bool ProcessToolAction(ItemType itemType)
     {
-        if (!harvestable) return false;
-        if (harvestActionCount < cropModel.requireActionCount)
+        if (!harvestable || !CheakToolType(itemType)) return false;
+        if (harvestActionCount < requireActionCount)
         {
             harvestActionCount++;
+            if (hasAnimation)
+            {
+                _animator.SetTrigger("Shake");
+            }
             return false;
         }
         else
@@ -69,10 +84,42 @@ public class StaticItem : MonoBehaviour
             {
                 amountToProduce = Random.Range(cropModel.producedMinAmount[i], cropModel.producedMaxAmount[i] + 1);
             }
-            Debug.Log("amountToProduce" + amountToProduce);
             _itemEventChannel.RaiseCreateItem(cropModel.producedItemID[i], transform.position, 2, amountToProduce);
         }
-        Destroy(gameObject);
+        if (hasAnimation)
+        {
+            _animator.SetTrigger("LeftFall");
+            
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
+    private bool CheakToolType(ItemType itemType)
+    {
+        foreach(ItemType tpye in cropModel.harvestToolType)
+        {
+            if (tpye == itemType)
+                return true;
+        }
+        return false;
+    }
+
+    private void AnimationEnd()
+    {
+        if (cropModel.hasTransferItem)
+        {
+            _spriteRenderer.sprite = cropModel.transferItemSprite;
+            requireActionCount = cropModel.transferRequireActionCount;
+            harvestActionCount = 0;
+            hasAnimation = false;
+            _animator.enabled = false;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 }

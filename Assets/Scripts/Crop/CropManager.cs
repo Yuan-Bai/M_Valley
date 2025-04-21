@@ -91,7 +91,7 @@ public class CropManager : MonoBehaviour
         StaticItem staticItem = cropInstance.GetComponent<StaticItem>();
         staticItem.SetSprite(cropSprite);
         staticItem.UpdateCollider();
-        staticItem.cropModel = cropModel;
+        staticItem.Initialize(cropModel);
         staticItem.harvestable = currentStage >= growthDays.Length;
     }
 

@@ -64,7 +64,7 @@ public class GridMapManager : MonoBehaviour
     {
         Vector3Int cellPos = _currentGrid.WorldToCell(pos);
         string key = SceneManager.GetActiveScene().name+'&'+cellPos.x+'X'+cellPos.y+'Y';
-        tileModelDict.TryGetValue(key, out TileModel tileModel);
+        if (!tileModelDict.TryGetValue(key, out TileModel tileModel)) return;
         switch (itemModel.itemType)
         {
             case ItemType.HoeTool:
@@ -90,9 +90,26 @@ public class GridMapManager : MonoBehaviour
                 }
             }
             break;
+            case ItemType.ChopTool:
+            if (tileModel.seedItemID!=-1)
+            {
+                StaticItem staticItem = GetSatticItem(pos);
+                if (staticItem==null)
+                {
+                    break;
+                }
+                if (staticItem.ProcessToolAction(itemModel.itemType))
+                {
+                    ClearDigGround(tileModel);
+                }
+            }
+            break;
             case ItemType.Seed:
-            _itemEventChannel.RaiseSelectItemDrop(1);
-            _cropEventChannel.RaisePlantSeed(itemModel.itemID, tileModel);
+            if (tileModel.seedItemID==-1)
+            {
+                _itemEventChannel.RaiseSelectItemDrop(1);
+                _cropEventChannel.RaisePlantSeed(itemModel.itemID, tileModel);
+            }
             break;
         }
     }
@@ -226,26 +243,6 @@ public class GridMapManager : MonoBehaviour
             _waterTileMap.SetTile(pos, null);
             tile.daysSinceWater = -1;
         }
-    }
-
-    private void UpdateGround()
-    {
-        // foreach (var elem in tileModelDict)
-        // {
-        //     if (elem.Value.daysSinceDug > -1)
-        //     {
-        //         elem.Value.daysSinceDug++;
-        //     }
-        //     if (elem.Value.daysSinceWater > -1)
-        //     {
-        //         elem.Value.daysSinceWater = -1;
-        //     }
-
-        //     if (elem.Value.daysSinceDug > 4 && elem.Value.seedItemID != -1)
-        //     {
-        //         elem.Value.daysSinceDug = -1;
-        //     }
-        // }
     }
     #endregion
 }

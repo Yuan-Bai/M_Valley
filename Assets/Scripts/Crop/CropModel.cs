@@ -31,7 +31,9 @@ public class CropModel
     [Header("使用次数")]
     public int requireActionCount;
     [Header("转换新物品ID")]
-    public int transferItemID = -1;
+    public bool hasTransferItem;
+    public Sprite transferItemSprite;
+    public int transferRequireActionCount;
 
     [Space]
     [Header("收割果实信息")]
@@ -48,5 +50,5 @@ public class CropModel
     public bool generateAtPlayerPosition;
     public bool hasAnimation;
     public bool hasParticalEffect;
-
+    public ParticleEffectTpye particleEffectTpye;
 }

@@ -143,8 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e2a31e429673784c86bb13ff77b027e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colliderScaleFactor: 0.95
+  _animator: {fileID: 0}
+  _isAutoGenerateCollider: 1
+  _colliderScaleFactor: 0.95
   _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
+  _animationEventChannel: {fileID: 11400000, guid: c69da94a697b5ba41bafce6439650a7a, type: 2}
   cropModel:
     seedItemID: 0
     growthDays: 
@@ -163,3 +166,4 @@ MonoBehaviour:
     generateAtPlayerPosition: 0
     hasAnimation: 0
     hasParticalEffect: 0
+  harvestable: 0

@@ -108,12 +108,12 @@ public class WorldItem : MonoBehaviour
         _rb.velocity = velocity;
     }
 
-    public void Throw(Vector3 velocity, float totalTime, float gravity, CircleCollider2D collider)
+    public void Throw(Vector3 velocity, float totalTime, float gravity)
     {
-        StartCoroutine(ThrowRoutine(velocity, totalTime, gravity, collider));
+        StartCoroutine(ThrowRoutine(velocity, totalTime, gravity));
     }
 
-    private IEnumerator ThrowRoutine(Vector3 velocity, float totalTime, float gravity, CircleCollider2D collider)
+    private IEnumerator ThrowRoutine(Vector3 velocity, float totalTime, float gravity)
     {
         isThrowing = true;
         // 运动逻辑
@@ -141,26 +141,3 @@ public class WorldItem : MonoBehaviour
     }
 
 }
-
-//     public void Throw(float totalTime, float horizontalSpeed ,float verticalSpeed,float gravity)
-//     {
-//         StartCoroutine(SetColliderDisableForSeconds(2));
-//         StartCoroutine(ThrowRoutine(totalTime, horizontalSpeed, verticalSpeed, gravity));
-//     }
-
-//     private IEnumerator ThrowRoutine(float totalTime, float horizontalSpeed ,float verticalSpeed,float gravity)
-//     {
-//         // 初始状态设置
-//         // _rb.isKinematic = false;
-//         SetVelocity(new Vector2(horizontalSpeed, verticalSpeed));
-//         float costTime = 0;
-//         while(costTime<totalTime)
-//         {
-//             costTime += Time.deltaTime;
-//             verticalSpeed -= Time.deltaTime * gravity;
-//             SetVelocity(new Vector2(horizontalSpeed, verticalSpeed));
-//             yield return null;
-//         }
-//         SetVelocity(Vector2.zero);
-//     }
-// }
