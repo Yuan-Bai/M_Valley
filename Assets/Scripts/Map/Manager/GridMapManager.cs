@@ -9,9 +9,12 @@ using UnityEngine.XR;
 public class GridMapManager : MonoBehaviour
 {
     [Header("参数")]
-    [SerializeField] private List<MapDataSO> mapDataSOList = new List<MapDataSO>();
+    [SerializeField] private List<MapDataSO> mapDataSOList = new();
     [SerializeField] private RuleTile digTile;
     [SerializeField] private RuleTile waterTile;
+
+    [Header("资源获取")]
+    [SerializeField] private CropDataBase_SO _cropDataBase;
 
     [Header("事件通道")]
     [SerializeField] private SceneEventChannel _sceneEventChannel;
@@ -32,6 +35,8 @@ public class GridMapManager : MonoBehaviour
     {
         _sceneEventChannel.OnAfterSceneLoad += HandleAfterSceneLoad;
         _gridEventChannel.OnTileUpdate += HandleGridUpdate;
+        _gridEventChannel.OnGridDimensionsRequest += HandleGridDimensionsRequest;
+        _gridEventChannel.OnTileModelDictRequest += HandleGridModelDictRequest;
         _timeEventChannel.OnDayChanged += HandleDayChanged;
         _timeEventChannel.OnSeasonChanged += HandleSeasonChanged;
     }
@@ -40,6 +45,8 @@ public class GridMapManager : MonoBehaviour
     {
         _sceneEventChannel.OnAfterSceneLoad -= HandleAfterSceneLoad;
         _gridEventChannel.OnTileUpdate -= HandleGridUpdate;
+        _gridEventChannel.OnGridDimensionsRequest -= HandleGridDimensionsRequest;
+        _gridEventChannel.OnTileModelDictRequest -= HandleGridModelDictRequest;
         _timeEventChannel.OnDayChanged -= HandleDayChanged;
         _timeEventChannel.OnSeasonChanged -= HandleSeasonChanged;
     }
@@ -114,11 +121,40 @@ public class GridMapManager : MonoBehaviour
         }
     }
 
+    private void HandleGridDimensionsRequest(System.Action<int, int, int, int> callBack)
+    {
+        foreach (var mapDataSO in mapDataSOList)
+        {
+            if (mapDataSO.sceneName == SceneManager.GetActiveScene().name)
+                callBack.Invoke(mapDataSO.gridWidth, mapDataSO.gridHeight, mapDataSO.originalPos.x, mapDataSO.originalPos.y);
+        }
+    }
+
+    private void HandleGridModelDictRequest(System.Action<Dictionary<string, TileModel>> callBack)
+    {
+        callBack.Invoke(tileModelDict);
+    }
+
     private void HandleDayChanged()
     {
         foreach (StaticItem staticItem in FindObjectsOfType<StaticItem>())
         {
-            Destroy(staticItem.gameObject);
+            if (staticItem.isPreGenerate)
+            {
+                Vector3Int cellPos = _currentGrid.WorldToCell(staticItem.transform.position);
+                string key = SceneManager.GetActiveScene().name+'&'+cellPos.x+'X'+cellPos.y+'Y';
+                TileModel tileModel = tileModelDict[key];
+                int id =  staticItem.cropModel.seedItemID;
+                staticItem.cropModel = _cropDataBase.GetCropModelByID(id);
+                tileModel.seedItemID = id;
+                tileModel.growthDays = staticItem.cropModel.TotalGrowthDays;
+
+                Destroy(staticItem.gameObject);
+            }
+            else
+            {
+                Destroy(staticItem.gameObject);
+            }
         }
         foreach (var elem in tileModelDict)
         {

@@ -147,7 +147,7 @@ MonoBehaviour:
   _isAutoGenerateCollider: 0
   _colliderScaleFactor: 0.95
   _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
-  _animationEventChannel: {fileID: 11400000, guid: c69da94a697b5ba41bafce6439650a7a, type: 2}
+  _particalEventChannel: {fileID: 11400000, guid: 19badb4a83a38ae469937e114439aea6, type: 2}
   cropModel:
     seedItemID: 0
     growthDays: 
@@ -156,7 +156,9 @@ MonoBehaviour:
     seasons: 
     harvestToolType: 
     requireActionCount: 0
-    transferItemID: -1
+    hasTransferItem: 0
+    transferItemSprite: {fileID: 0}
+    transferRequireActionCount: 0
     producedItemID: 
     producedMinAmount: 
     producedMaxAmount: 
@@ -166,4 +168,5 @@ MonoBehaviour:
     generateAtPlayerPosition: 0
     hasAnimation: 0
     hasParticalEffect: 0
+    particleEffectTpye: 0
   harvestable: 0

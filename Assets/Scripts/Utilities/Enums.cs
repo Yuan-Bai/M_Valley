@@ -27,5 +27,5 @@ public enum GridType
 
 public enum ParticleEffectTpye
 {
-    None, LeavesFall01, LeavesFall02,
+    None, LeavesFall01, LeavesFall02, RockParticle01, GrassParticle
 }

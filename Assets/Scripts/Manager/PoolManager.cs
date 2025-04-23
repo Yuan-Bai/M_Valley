@@ -52,6 +52,8 @@ public class PoolManager : MonoBehaviour
         {
             ParticleEffectTpye.LeavesFall01 => _poolEffectList[0],
             ParticleEffectTpye.LeavesFall02 => _poolEffectList[1],
+            ParticleEffectTpye.RockParticle01 => _poolEffectList[2],
+            ParticleEffectTpye.GrassParticle => _poolEffectList[3],
             _ => null
         };
         if (pool == null) return;

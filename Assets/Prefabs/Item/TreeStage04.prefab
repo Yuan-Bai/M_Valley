@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3384459489444150082
 SpriteRenderer:
@@ -208,16 +208,18 @@ MonoBehaviour:
   _isAutoGenerateCollider: 0
   _colliderScaleFactor: 0.95
   _itemEventChannel: {fileID: 11400000, guid: 7669510929186c942b804a2421fcd318, type: 2}
-  _animationEventChannel: {fileID: 11400000, guid: c69da94a697b5ba41bafce6439650a7a, type: 2}
+  _particalEventChannel: {fileID: 11400000, guid: 19badb4a83a38ae469937e114439aea6, type: 2}
   cropModel:
-    seedItemID: 0
+    seedItemID: 1016
     growthDays: 
     growthPrefabs: []
     growthSprites: []
     seasons: 
     harvestToolType: 
     requireActionCount: 0
-    transferItemID: -1
+    hasTransferItem: 0
+    transferItemSprite: {fileID: 0}
+    transferRequireActionCount: 0
     producedItemID: 
     producedMinAmount: 
     producedMaxAmount: 
@@ -227,7 +229,10 @@ MonoBehaviour:
     generateAtPlayerPosition: 0
     hasAnimation: 0
     hasParticalEffect: 0
+    particleEffectTpye: 0
+    offset: {x: 0, y: 0, z: 0}
   harvestable: 0
+  isPreGenerate: 0
 --- !u!95 &684734271120154432
 Animator:
   serializedVersion: 5

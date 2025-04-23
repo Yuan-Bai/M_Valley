@@ -51,4 +51,5 @@ public class CropModel
     public bool hasAnimation;
     public bool hasParticalEffect;
     public ParticleEffectTpye particleEffectTpye;
+    public Vector3 offset;
 }

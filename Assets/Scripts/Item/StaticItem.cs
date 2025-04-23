@@ -11,15 +11,18 @@ public class StaticItem : MonoBehaviour
 
     [Header("事件通道")]
     [SerializeField] private ItemEventChannel _itemEventChannel;
+    [SerializeField] private ParticalEventChannel _particalEventChannel;
 
     private BoxCollider2D _collider;
     private SpriteRenderer _spriteRenderer;
     private int harvestActionCount;
     private int requireActionCount;
     private bool hasAnimation;
+    private bool hasParticalEffect;
 
     public CropModel cropModel;
     public bool harvestable;
+    public bool isPreGenerate;
 
     void Awake()
     {
@@ -32,6 +35,7 @@ public class StaticItem : MonoBehaviour
         this.cropModel = cropModel;
         requireActionCount = cropModel.requireActionCount;
         hasAnimation = cropModel.hasAnimation;
+        hasParticalEffect = cropModel.hasParticalEffect;
     }
 
     public void SetSprite(Sprite sprite)
@@ -59,6 +63,15 @@ public class StaticItem : MonoBehaviour
             if (hasAnimation)
             {
                 _animator.SetTrigger("Shake");
+            }
+            if (hasParticalEffect)
+            {
+                _particalEventChannel.RaiseParticleEffect(cropModel.particleEffectTpye, transform.position + cropModel.offset);
+            }
+            if (harvestActionCount >= requireActionCount)
+            {
+                SpawnHarvestItems();
+                return true;
             }
             return false;
         }
@@ -115,6 +128,7 @@ public class StaticItem : MonoBehaviour
             requireActionCount = cropModel.transferRequireActionCount;
             harvestActionCount = 0;
             hasAnimation = false;
+            hasParticalEffect = false;
             _animator.enabled = false;
         }
         else

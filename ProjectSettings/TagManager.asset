@@ -9,6 +9,7 @@ TagManager:
   - Dig
   - Water
   - CropParent
+  - AstarTest
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - UI
   - Player
   - Tele
-  - 
+  - Grass
   - 
   - 
   - 
