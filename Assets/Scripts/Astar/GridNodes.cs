@@ -26,14 +26,14 @@ public class GridNodes
 
     public Node GetNode(Vector2Int pos)
     {
-        if (pos.x < 0 || pos.x > _width || pos.y < 0 || pos.y > _height) return null;
+        if (pos.x < 0 || pos.x >= _width || pos.y < 0 || pos.y >= _height) return null;
         if (_nodes[pos.x, pos.y].isObstacle) return null;
         return _nodes[pos.x, pos.y];
     }
 
     public bool TryGetNode(Vector2Int pos, out Node node)
     {
-        if (pos.x < 0 || pos.x > _width || pos.y < 0 || pos.y > _height)
+        if (pos.x < 0 || pos.x >= _width || pos.y < 0 || pos.y >= _height)
         {
             node = null;
             return false;

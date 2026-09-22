@@ -70,6 +70,7 @@ public class Astar : MonoBehaviour
 
         _openNodeList.Clear();
         _closeNodeList.Clear();
+        pathFound = false;
         _openNodeList.Add(_startNode);
         while (_openNodeList.Count > 0)
         {

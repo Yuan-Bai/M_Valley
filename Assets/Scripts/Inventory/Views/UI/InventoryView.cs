@@ -28,7 +28,7 @@ public class InventoryView : MonoBehaviour
     {
         _InventoryEventChannel.OnDeltaUpdate -= HandleDeltaUpdate;
         _InventoryEventChannel.OnFullUpdate -= HandleFullUpdate;
-        _InventoryEventChannel.OnTipUpdate += HandleTipUpdate;
+        _InventoryEventChannel.OnTipUpdate -= HandleTipUpdate;
     }
 
     IEnumerator Start() {

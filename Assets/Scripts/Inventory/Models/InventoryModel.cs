@@ -116,7 +116,7 @@ public class InventoryModel
             int canAdd = _itemDatabase.GetItemByID(id).MaxStack - originalCount2;
             int addAmount = Math.Min(canAdd, originalCount1);
             _slots[slotIndex2].Count += addAmount;
-            if (originalCount1 < addAmount)
+            if (originalCount1 <= addAmount)
             {
                 _slots[slotIndex1].ItemSlotClear();
             }
